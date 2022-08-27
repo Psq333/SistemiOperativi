@@ -1,0 +1,8 @@
+girone C : sle ing usa alg
+
+sle-ing=2-1
+sle-usa=2-1
+sle-alg=1-1
+ing-usa=0-1
+ing-alg=1-1
+usa-alg=2-1

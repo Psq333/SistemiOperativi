@@ -1,0 +1,9 @@
+girone H : spa svi hon cil
+
+spa-svi=1-2
+spa-hon=2-2
+spa-cil=1-2
+svi-hon=1-1
+svi-cil=3-2
+hon-cil=2-1
+

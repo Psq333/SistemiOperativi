@@ -1,0 +1,8 @@
+girone F : ita par nze sla
+
+ita-par=1-1
+ita-nze=2-1
+ita-sla=1-0
+par-nze=0-2
+par-sla=0-1
+nze-sla=1-2

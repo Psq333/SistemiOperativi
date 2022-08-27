@@ -1,0 +1,9 @@
+girone B : cos arg nig gre
+
+cos-arg=1-2
+cos-nig=2-2
+cos-gre=1-2
+arg-nig=1-1
+arg-gre=2-0
+nig-gre=2-1
+

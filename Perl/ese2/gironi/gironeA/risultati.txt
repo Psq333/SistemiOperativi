@@ -1,0 +1,8 @@
+girone A : saf mes uru fra
+
+saf-mes=0-2
+saf-uru=1-1
+saf-fra=0-2
+mes-uru=2-1
+mes-fra=1-2
+uru-fra=2-2
