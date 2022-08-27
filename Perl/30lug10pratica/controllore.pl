@@ -7,7 +7,7 @@ $fermata = $ARGV[0] || die "Inserire fermata di salita controllore";
 @array;
 @bus;
 print(fh1);
-
+@ferbetti;
 $ultimapos = 1;
 while(<fh>){
     @array = split / /, $_;
@@ -24,8 +24,7 @@ while(<fh>){
     else{
         push @bus, "*";
     }
-    print("@array[0]\n");
-        #push @array, $_;
+    push @furbetti, @array[0] if(@array[2] <= $fermata && @array[1] eq "no");
     $ultimapos++;
 }
 
@@ -33,6 +32,13 @@ while ($ultimapos != 49){
     push @bus, "_";
     $ultimapos++;
 }
+
+
+print("furbetti: ");
+print "@furbetti\n";
+
+
+
 
 open(fh_print, ">", "new_bus.txt");
 
@@ -49,9 +55,7 @@ for ($i = 1; $i <= $len; $i+1){
     else{
         print fh_print " ";
     }
-    if($i == 24){
-        print fh_print "\n";
-    }
+     print fh_print "\n" if($i == 24);
     $i++;
 }
 close(fh);
