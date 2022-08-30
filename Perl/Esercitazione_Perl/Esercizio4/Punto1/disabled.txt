@@ -1,0 +1,5 @@
+< root - /bin/bash >
+< ianni - /bin/bash >
+< kali - /bin/bash >
+< a.bria - /bin/bash >
+< alessandra - /bin/bash >
