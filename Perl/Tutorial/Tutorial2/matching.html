@@ -1,0 +1,238 @@
+<head>
+	<title> Perl tutorial: String matching</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+String matching</h1>
+<hr>
+
+<p>
+
+One of the most useful features of Perl (if not <em>the</em> most useful
+feature) is its powerful string manipulation facilities. At the
+heart of this is the <em>regular expression</em> (RE) which is shared by
+many other UNIX utilities.
+
+<p>
+<hr>
+<h2><a name="res"> Regular expressions</a></h2>
+
+A regular expression is contained in slashes, and matching occurs with
+the <strong>=~</strong> operator. The following expression
+is true if the string <em>the</em> appears in variable $sentence.
+<pre>
+$sentence =~ /the/
+</pre>
+The RE is case sensitive, so if
+<pre>
+$sentence = "The quick brown fox";
+</pre>
+then the above match will be false. The operator <strong>!~</strong> is
+used for spotting a non-match. In the above example
+<pre>
+$sentence !~ /the/
+</pre>
+is true because the string <em>the</em> does not appear in $sentence.
+
+
+<p>
+<hr>
+<h2><a name="dollarund"> The $_ special variable</a></h2>
+
+We could use a conditional as
+<pre>
+if ($sentence =~ /under/)
+{
+	print "We're talking about rugby\n";
+}
+</pre>
+which would print out a message if we had either of the following
+<pre>
+$sentence = "Up and under";
+$sentence = "Best winkles in Sunderland";
+</pre>
+But it's often much easier if we assign the sentence to the special
+variable <strong>$_</strong> which is of course a scalar. If we do this
+then we can avoid using the match and non-match operators and the
+above can be written simply as
+<pre>
+if (/under/)
+{
+	print "We're talking about rugby\n";
+}
+</pre>
+The <strong>$_</strong> variable is the default for many Perl operations
+and tends to be used very heavily.
+
+<p>
+<hr>
+<h2><a name="moreres"> More on REs</a></h2>
+
+In an RE there are plenty of special characters, and it is these
+that both give them their power and make them appear very complicated.
+It's best to build up your use of REs slowly; their creation can be
+something of an art form.
+
+<p>
+
+Here are some special RE characters and their meaning
+<pre>
+.	# Any single character except a newline
+^	# The beginning of the line or string
+$	# The end of the line or string
+*	# Zero or more of the last character
++	# One or more of the last character
+?	# Zero or one of the last character
+</pre>
+and here are some example matches. Remember that should be enclosed
+in <strong>/</strong>...<strong>/</strong> slashes to be used.
+<pre>
+t.e	# t followed by anthing followed by e
+	# This will match the
+	#                 tre
+	#                 tle
+	# but not te
+	#         tale
+^f	# f at the beginning of a line
+^ftp	# ftp at the beginning of a line
+e$	# e at the end of a line
+tle$	# tle at the end of a line
+und*	# un followed by zero or more d characters
+	# This will match un
+	#                 und
+	#                 undd
+	#                 unddd (etc)
+.*	# Any string without a newline. This is because
+	# the . matches anything except a newline and
+	# the * means zero or more of these.
+^$	# A line with nothing in it.
+</pre>
+
+<p>
+
+There are even more options.
+Square brackets are used to match any one of the characters inside
+them. Inside square brackets a <strong>-</strong> indicates "between" and
+a <strong>^</strong> at the beginning means "not":
+<pre>
+[qjk]		# Either q or j or k
+[^qjk]		# Neither q nor j nor k
+[a-z]		# Anything from a to z inclusive
+[^a-z]		# No lower case letters
+[a-zA-Z]	# Any letter
+[a-z]+		# Any non-zero sequence of lower case letters
+</pre>
+At this point you can probably skip to the end and do at least most of the
+exercise. The rest is mostly just for reference.
+
+<p>
+
+A vertical bar <strong>|</strong> represents an "or" and parentheses
+<strong>(</strong>...<strong>)</strong>
+can be used to group things together:
+<pre>
+jelly|cream	# Either jelly or cream
+(eg|le)gs	# Either eggs or legs
+(da)+		# Either da or dada or dadada or...
+</pre>
+
+<p>
+
+Here are some more special characters:
+<pre>
+\n		# A newline
+\t		# A tab
+\w		# Any alphanumeric (word) character.
+		# The same as [a-zA-Z0-9_]
+\W		# Any non-word character.
+		# The same as [^a-zA-Z0-9_]
+\d		# Any digit. The same as [0-9]
+\D		# Any non-digit. The same as [^0-9]
+\s		# Any whitespace character: space,
+		# tab, newline, etc
+\S		# Any non-whitespace character
+\b		# A word boundary, outside [] only
+\B		# No word boundary
+</pre>
+
+<p>
+
+Clearly characters like
+<strong>$</strong>,
+<strong>|</strong>,
+<strong>[</strong>,
+<strong>)</strong>,
+<strong>\</strong>,
+<strong>/</strong>
+and so on are peculiar cases in
+regular expressions. If you want to match for one of those then
+you have to preceed it by a backslash. So:
+<pre>
+\|		# Vertical bar
+\[		# An open square bracket
+\)		# A closing parenthesis
+\*		# An asterisk
+\^		# A carat symbol
+\/		# A slash
+\\		# A backslash
+</pre>
+and so on.
+
+<p>
+<hr>
+<h2><a name="exampleres"> Some example REs</a></h2>
+
+As was mentioned earlier, it's probably best to build up your
+use of regular expressions slowly. Here are a few examples. Remember
+that to use them for matching they should be put in
+<strong>/</strong>...<strong>/</strong> slashes
+<pre>
+[01]		# Either "0" or "1"
+\/0		# A division by zero: "/0"
+\/ 0		# A division by zero with a space: "/ 0"
+\/\s0		# A division by zero with a whitespace:
+		# "/ 0" where the space may be a tab etc.
+\/ *0		# A division by zero with possibly some
+		# spaces: "/0" or "/ 0" or "/  0" etc.
+\/\s*0		# A division by zero with possibly some
+		# whitespace.
+\/\s*0\.0*	# As the previous one, but with decimal
+		# point and maybe some 0s after it. Accepts
+		# "/0." and "/0.0" and "/0.00" etc and
+		# "/ 0." and "/  0.0" and "/   0.00" etc.
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+Previously your program counted non-empty lines. Alter it so that
+instead of counting non-empty lines it counts only lines with
+<ul>
+	<li> the letter <em>x</em>
+	<li> the string <em>the</em>
+	<li> the string <em>the</em> which may or may not have a
+	     capital <em>t</em>
+	<li> the word <em>the</em> with or without a capital. Use
+	     <strong>\b</strong> to detect word boundaries.
+</ul>
+In each case the program should print out every line, but it should
+only number those specified.
+Try to use the <strong>$_</strong> variable to
+avoid using the <strong>=~</strong> match operator explicitly.
+
+
+<p>
+</body>
+
+<hr>
+<a href="conditionals.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="sandtr.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

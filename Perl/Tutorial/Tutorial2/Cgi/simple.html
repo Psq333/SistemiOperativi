@@ -1,0 +1,71 @@
+<head>
+	<title> CGI Tutorial: A simple CGI script</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1>
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif"
+     width=48 height=48 alt="">
+A simple CGI script</h1>
+<hr>
+
+<p>
+
+The first task is to write a very simple perl program which just
+prints out an HTML document. This should include all the usual
+&lt;head&gt; ... &lt;/head&gt; and &lt;title&gt; ... &lt;/title&gt;
+commands. However, there are two things to note.
+
+<p>
+
+First of all, the first two lines of the print out are special.
+The first line must be
+<pre>
+Content-type: text/html
+</pre>
+so that the browser knows what kind of document it is and therefore
+how to display it. In this case
+it is a text document of the subclass HTML. You can also send back
+plain ASCII documents by using text/plain instead. Sound samples and
+images also have to have the content type specified appropriately.
+The second line must be blank (ie it must contain just a line feed).
+This line is reserved for future development.
+
+<p>
+
+The second point is really a tip: Strings in perl programs can span
+over several lines. This means the main part of your perl program
+can just be one enormous <strong>print</strong> statement.
+
+<p>
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+Write a CGI script as a perl program which just generates a simple HTML
+document. Add a link to it from your home page and make sure you specify
+the head, the body, a title and a header as well as some main text.  You
+may want to include some horizontal rules and some links, such as a link
+back to your home page.  The important thing is to make sure it works,
+because there are plenty of pitfalls even at this stage. Remember to correctly
+set the permissions for it and for any other files and directories as
+appropriate, and make sure the first two lines are as above.
+
+
+<p>
+</body>
+
+<hr>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/what.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/start.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif" width=48 height=48 alt="Start"></a>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/environment.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_right.gif" width=48 height=48 alt="Next"></a>
+
+
+<hr>

@@ -1,0 +1,112 @@
+<head>
+	<title> Perl tutorial: File handling</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+File handling</h1>
+<hr>
+
+<p>
+
+Here is the basic perl program which does the same as the UNIX
+<strong>cat</strong> command on a certain file.
+<pre>
+#!/usr/local/bin/perl
+#
+# Program to open the password file, read it in,
+# print it, and close it again.
+
+$file = '/etc/passwd';		# Name the file
+open(INFO, $file);		# Open the file
+@lines = &lt;INFO&gt;;		# Read it into an array
+close(INFO);			# Close the file
+print @lines;			# Print the array
+</pre>
+
+<p>
+
+The <strong>open</strong> function opens a file for input (i.e. for
+reading). The first parameter is the <em>filehandle</em> which allows Perl
+to refer to the file in future. The second parameter is an expression
+denoting the filename. If the filename was given in quotes then it is taken
+literally without shell expansion.  So the expression
+'~/notes/todolist' will not be interpreted successfully. If
+you want to force shell expansion then use angled brackets: that is, use
+&lt;~/notes/todolist&gt; instead.
+
+<p>
+
+The <strong>close</strong> function tells Perl to finish with that file.
+
+<p>
+
+There are a few useful points to add to this discussion on filehandling.
+First, the <strong>open</strong> statement can also specify a file for output
+and for appending as well as for input. To do this, prefix the filename
+with a <strong>&gt;</strong> for output and a <strong>&gt;&gt;</strong> for
+appending:
+<pre>
+open(INFO, $file);	# Open for input
+open(INFO, "&gt;$file");	# Open for output
+open(INFO, "&gt;&gt;$file");	# Open for appending
+open(INFO, "&lt;$file");	# Also open for input
+</pre>
+
+<p>
+
+Second, if you want to print something to a file you've already
+opened for output then you can use the print statement with an
+extra parameter. To print a string to the file with the INFO filehandle use
+<pre>
+print INFO "This line goes to the file.\n";
+</pre>
+
+<p>
+
+Third, you can use the following to open
+the standard input (usually the keyboard) and standard output
+(usually the screen) respectively:
+<pre>
+open(INFO, '-');	# Open standard input
+open(INFO, '&gt;-');	# Open standard output
+</pre>
+
+In the above
+program the information is read from a file. The
+file is the INFO file and to read from it Perl uses angled brackets.
+So the statement
+<pre>
+@lines = &lt;INFO&gt;;
+</pre>
+reads the file denoted by the filehandle into the array @lines.  Note that
+the &lt;INFO&gt; expression reads in the file entirely in one go. This
+because the reading takes place in the context of an array variable. If
+@lines is replaced by the scalar $lines then only the next one line would
+be read in. In either case each line is stored complete with its newline
+character at the end.
+
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+Modify the above program so that the entire file is printed with a # symbol
+at the beginning of each line. You should only have to add one line and
+modify another. Use the <strong>$"</strong> variable.
+Unexpected things can happen with files, so you may find it
+helpful to use the <strong>-w</strong> option as mentioned in the section on
+<a href="running.html">running Perl programs</a>.
+
+<p>
+</body>
+
+<hr>
+<a href="arrays.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="control.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

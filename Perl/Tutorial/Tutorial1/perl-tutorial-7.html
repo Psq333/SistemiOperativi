@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Strutture di controllo </TITLE>
+ <LINK HREF="perl-tutorial-6.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc7" REL=contents>
+ <LINK HREF="perl-tutorial-8.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-6.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc7"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-8.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s7">7. Strutture di controllo </A></H2>
+
+<P>
+<P>Le possibilità più interessanti nascono quando introduciamo
+strutture di controllo e cicli. Il Perl supporta molti tipi
+di queste strutture e si possono notare grosse somiglianze con i
+costrutti simili in C e Pascal. Vediamo ora i casi più importanti.
+<P>
+<H2><A NAME="ss7.1">7.1 foreach </A>
+</H2>
+
+<P>
+<P>Per prendere in considerazione una alla volta ogni riga di un
+array o di un altro contenitore di tipo lista (come ad esempio
+le diverse righe in un file di testo) in Perl si usa il comando
+<CODE>foreach</CODE>. Così ad esempio:
+<P>
+<PRE>
+   # Visita un elemento per volta
+   foreach $boccone (@cibo)         
+   # e chiamalo $boccone
+   {
+      # stampa l'elemento
+      print "$boccone\n";
+      # si possono fare anche altre cose...
+      print "Yum yum\n";
+   }
+</PRE>
+<P>Le azione che devono essere eseguite ogni volta sono racchiuse in un
+blocco individuato dalle parentesi graffe. La prima volta che il blocco
+viene eseguito <CODE>$boccone</CODE> contiene il primo elemento 
+dell'array <CODE>$cibo</CODE>.
+La volta successiva a <CODE>$boccone</CODE> viene assegnato l'elemento successivo
+dell'array e così via. Se quando si parte <CODE>&amp;cibo</CODE> è vuoto, allora il
+blocco di istruzioni interne non viene mai eseguito.
+<P>
+<P>
+<H2><A NAME="ss7.2">7.2 Valori di verità </A>
+</H2>
+
+<P>
+<P>Le seguenti strutture dipenderanno dai risultati di una valutazione
+logica. In Perl ogni numero diverso da zero e ogni stringa non vuota
+sono considerati avere il valore logico di vero. Al contrario il 
+numero zero, il carattere zero stesso presente isolato in una stringa
+e una stringa vuota sono considerati avere il valore di falso.
+<P>
+<PRE>
+   # E` $a numericamente uguale a $b?
+   # (Attenzione: non usare l'operatore =)
+   $a == $b                
+   # E` $a numericamente diverso da $b?   
+   $a != $b
+   # E` $a uguale come stringa a $b?   
+   $a eq $b
+   # E` $a diverso come stringa da $b?
+   $a ne $b 
+</PRE>
+<P>Si possono inoltre usare anche gli operatorei logici and, or e not:
+<P>
+<PRE>
+   # Sono $a e $b contemporaneamente veri?
+   ($a &amp;&amp; $b)
+   # E` vero almeno uno dei due?
+   ($a || $b)
+   # $a è falso?
+   !($a)
+</PRE>
+<P>
+<P>
+<H2><A NAME="ss7.3">7.3 for </A>
+</H2>
+
+<P>
+<P>Il Perl ha una struttura <CODE>for</CODE> molto simile a quella del C.
+Nelle parentesi che seguono il <CODE>for</CODE> vanno messe tre espressioni
+separate da punti e virgola. Come prima espressione si mette
+il comando di inizializzazione; esso verrà eseguito solo all'inizio,
+prima di entrare nel ciclo vero e proprio. La seconda 
+espressione rappresenta invece la condizione di continuazione;
+prima dell'esecuzione di ogni ciclo essa viene valutata e se 
+risulta falsa si esce dal ciclo, altrimenti si continua.
+Infine la terza espressione viene eseguita alla fine di
+ogni iterazione del ciclo, dopo che sono state eseguite tutte
+le istruzioni specificate nel blocco interno.
+<P>Ecco un esempio di ciclo che stampa i numeri da 0 a 9:
+<P>
+<PRE>
+   for ($i = 0; $i &lt; 10; ++$i)
+   # Inizia con $i = 1
+   # Fallo se $i &lt; 10
+   # Incrementa $i, prima di ripetere
+   {
+      print "$i\n";
+   }
+</PRE>
+<P>
+<P>
+<H2><A NAME="ss7.4">7.4 while e until </A>
+</H2>
+
+<P>
+<P>Qui di seguito viene presentato un programma che legge un ingresso
+dalla tastiera e non prosegue finchè non viene inserita la parola
+corretta.
+<P>
+<PRE>
+   #!/usr/local/bin/perl
+   # Richiedi la password
+   print "Password? ";   
+   # Metti l'ingresso in $a   
+   $a = &lt;STDIN>;
+   # Rimuovi il newline finale
+   chop $a; 
+
+   # Finchè l'ingresso è sbagliato...   
+   while ($a ne "pippo") 
+   {
+      # Ripeti la richiesta
+      print "Sbagliato: riprova! ";
+      # Leggi di nuovo l'ingresso
+      $a = &lt;STDIN>;
+      chop $a;
+   }
+</PRE>
+<P>Il blocco di codice individuato dalle parentesi graffe è eseguito
+finchè l'ingresso non è uguale a <CODE>"pippo"</CODE>. Il funzionamento di
+while dovrebbe risultare chiaro, abbiamo però l'opportunità di
+osservare diverse cose. Primo, possiamo leggere dallo standard input
+(la tastiera) senza aprire prima il file. Secondo, quando la password
+viene inserita <CODE>$a</CODE> assume il valore di quella stringa incluso il
+carattere di newline alla fine. La funzione <CODE>chop</CODE> serve per rimuovere
+l'ultimo carattere di una stringa, in questo caso newline.
+<P>Eventualmente al posto di <CODE>while</CODE> si può usare <CODE>until</CODE>, tenendo presente
+che <CODE>until($condizione)</CODE> equivale a <CODE>while(!($condizione))</CODE>.
+Nell'ultimo programma visto bisognerebbe mettere <CODE>until($a eq "pippo")</CODE>
+al posto di <CODE>while($a ne "pippo")</CODE>, perchè il programma si comporti
+in modo identico.
+<P>Un'altra tecnica utile è mettere il controllo <CODE>while</CODE> o <CODE>until</CODE> alla fine
+del blocco di istruzioni del ciclo invece che all'inizio. Questo
+richiederà la presenza dell'operatore <CODE>do</CODE> all'inzio per segnalare 
+che il controllo della condizione sarà fatto alla fine.
+<P>Se escludiamo il messaggio <CODE>"Sbagliato: riprova! "</CODE> allora il programma
+precedente potrebbe essere riscritto in questo modo:
+<P>
+<PRE>
+   #!/usr/local/bin/perl
+   do
+   {
+      # Chiedi l'ingresso
+      "Password? ";
+      # Leggi l'ingresso
+      $a = &lt;STDIN>;
+      # Elimina il newline
+      chop $a;
+   }
+   # Se l'ingresso è sbagliato, ripeti
+   while ($a ne "pippo")
+</PRE>
+<P>
+<H2><A NAME="ss7.5">7.5 Esercizio </A>
+</H2>
+
+<P>
+<P>Modificare il programma relativo all'esercizio del capitolo precedente in 
+modo che ogni linea del file sia letta una alla volta ed sia data in uscita 
+preceduta da un numero di riga. Si dovrebbe ottenere qualcosa del genere:
+<P>
+<PRE>
+   1 root:oYpYXm/qRO6N2:0:0:Super-User:/:/bin/csh
+   2 sysadm:*:0:0:System V Administration:/usr/admin:/bin/sh
+   3 diag:*:0:996:Hardware Diagnostics:/usr/diags:/bin/csh
+   etc
+</PRE>
+<P>Potrà essere utile il seguente costrutto:
+<P>
+<PRE>
+   while ($line = &lt;INFO>)
+   {
+      ...
+   }
+</PRE>
+<P>Ottenuto il risultato cercato provare a modificare il programma in modo
+che i numeri di riga siano scritti come 001, 002, ..., 009, 010, 
+011, 012, etc. Per fare questo dovrebbe essere sufficiente alterare una
+riga inserendo quattro caratteri aggiuntivi. Con il perl è generalmente
+facile trovare scorciatoie di questo tipo...
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-6.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc7"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-8.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

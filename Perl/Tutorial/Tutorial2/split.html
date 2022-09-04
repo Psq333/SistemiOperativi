@@ -1,0 +1,156 @@
+<head>
+	<title> Perl tutorial: Split</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Split</h1>
+<hr>
+
+<p>
+
+A very useful function in Perl is
+<strong>split</strong>, which splits up a string and
+places it into an array. The function uses a regular expression and
+as usual works on the <strong>$_</strong> variable unless otherwise specified.
+
+<p>
+
+The <strong>split</strong> function is used like this:
+<pre>
+$info = "Caine:Michael:Actor:14, Leafy Drive";
+@personal = split(/:/, $info);
+</pre>
+which has the same overall effect as
+<pre>
+@personal = ("Caine", "Michael", "Actor", "14, Leafy Drive");
+</pre>
+If we have the information stored in the <strong>$_</strong>
+variable then we can just
+use this instead
+<pre>
+@personal = split(/:/);
+</pre>
+
+<p>
+
+If the fields are divided by any number of colons then we can
+use the RE codes to get round this. The code
+<pre>
+$_ = "Capes:Geoff::Shot putter:::Big Avenue";
+@personal = split(/:+/);
+</pre>
+is the same as
+<pre>
+@personal = ("Capes", "Geoff",
+             "Shot putter", "Big Avenue");
+</pre>
+But this:
+<pre>
+$_ = "Capes:Geoff::Shot putter:::Big Avenue";
+@personal = split(/:/);
+</pre>
+would be like
+<pre>
+@personal = ("Capes", "Geoff", "",
+             "Shot putter", "", "", "Big Avenue");
+</pre>
+
+<p>
+
+A word can be split into characters, a sentence split into words and
+a paragraph split into sentences:
+<pre>
+@chars = split(//, $word);
+@words = split(/ /, $sentence);
+@sentences = split(/\./, $paragraph);
+</pre>
+In the first case the null string is matched between each character, and
+that is why the @chars array is an array of characters - ie an array
+of strings of length 1.
+
+<p>
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+A useful tool in natural language processing is concordance. This allows
+a specific string to be displayed in its immediate context whereever
+it appears in a text. For example, a concordance program identifying
+the target string <em>the</em> might produce some of the following output.
+Notice how the occurrences of the target string line up vertically.
+<pre>
+discovered (this is the truth) that when he
+t kinds of metal to the leg of a frog, an e
+rrent developed and the frog's leg kicked,
+ longer attached to the frog, which was dea
+normous advances in the field of amphibian
+ch it hop back into the pond -- almost.  Bu
+ond -- almost.  But the greatest Electrical
+ectrical Pioneer of them all was Thomas Edi
+</pre>
+
+<p>
+
+This exercise is to write such a program. Here are some tips:
+<ul>
+	<li> Read the entire file into array (this obviously
+	     isn't useful in general because the file may be
+	     extremely large, but we won't worry about that
+	     here). Each item in the array will
+	     be a line of the file.
+	<li> When the chop function is used on an array it chops
+	     off the last character of every item in the array.
+	<li> Recall that you can join the whole array together with a
+	     statement like <strong>$text = "@lines";</strong>
+	<li> Use the target string as delimiter for splitting the
+	     text. (Ie, use the target string in place of the colon
+	     in our previous examples.) You should then have an
+	     array of all the strings between the target strings.
+	<li> For each array element in turn, print it out, print the
+	     target string, and then print the next array element.
+	<li> Recall that the last element of an array @food has index
+	     $#food.
+</ul>
+
+As it stands this would be a pretty good program, but the target strings
+won't line up vertically.
+To tidy up the strings you'll need the <strong>substr</strong> function.
+Here are three examples of its use.
+<pre>
+substr("Once upon a time", 3, 4);	# returns "e up"
+substr("Once upon a time", 7);		# returns "on a time"
+substr("Once upon a time", -6, 5);	# returns "a tim"
+</pre>
+The first
+example returns a substring of length 4 starting at position 3. Remember that
+the first character of a string has index 0.
+The second example shows that missing out the
+length gives the substring right to the end of the string
+The third example shows that
+you can also index from the end using a negative index. It
+returns the substring that starts at the 6th character from the end
+and has length 5.
+
+<p>
+If you use a negative index that extends beyond the beginning of the
+string then Perl will return nothing or give a warning. To avoid this
+happening you can
+pad out the string by using the <strong>x</strong> operator
+mentioned earlier. The expression (" "x30) produces
+30 spaces, for example.
+
+
+<p>
+</body>
+
+<hr>
+<a href="sandtr.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="associative.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

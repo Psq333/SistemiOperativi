@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Ricerca stringhe </TITLE>
+ <LINK HREF="perl-tutorial-10.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc11" REL=contents>
+ <LINK HREF="perl-tutorial-12.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-10.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc11"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-12.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s11">11. Ricerca stringhe </A></H2>
+
+<P>
+<P>Una delle caratteristiche più utili del Perl (se non la caratteristica più 
+utile) è la possibilità di manipolare le stringhe in modo potente. Tutto 
+questo grazie alle espressioni regolari (ER), strumento utilizzato anche da 
+molti altri programmi di utilità UNIX.
+<P>
+<H2><A NAME="ss11.1">11.1 Espressioni regolari </A>
+</H2>
+
+<P>
+<P>Un'espressione regolare viene racchiusa tra due barre oblique (slash), e per 
+vedere se esiste una corrispondenza tra una stringa ed una certa ER si usa 
+l'operatore <CODE>=~</CODE>. La seguente espressione è vera se la sequenza di caratteri
+<CODE>la</CODE> compare nella variabile <CODE>$frase</CODE>.
+<P>
+<PRE>
+   $frase =~ /la/
+</PRE>
+<P>L'ER è sensibile alle minuscole e alle maiuscole, così se
+<P>
+<PRE>
+   $frase = "La veloce volpe rossa";
+</PRE>
+<P>allora il confronto provato in precedenza darà esito negativo. Invece 
+l'operatore <CODE>!~</CODE> è usato per rilevare una non corrispondenza. 
+Rispetto all'esempio sopra
+<P>
+<PRE>
+   $frase !~ /la/
+</PRE>
+<P>è vera, perchè la sequenza <CODE>la</CODE> non compare in <CODE>$frase</CODE>.
+<P>
+<H2><A NAME="ss11.2">11.2 La variabile speciale <CODE>$_</CODE> </A>
+</H2>
+
+<P>
+<P>Potremmo usare espressioni condizionali tipo
+<P>
+<PRE>
+   if( $frase =~ /goal/ )
+   {
+      print "Stiamo parlando di calcio\n";
+   }
+</PRE>
+<P>che scriverebbe un messaggio per esempio in uno dei seguenti casi:
+<P>
+<PRE>
+   $frase = "Siamo sotto di un goal.";
+   $frase = "Un altro goal: evviva!".
+</PRE>
+<P>Ma è spesso molto più semplice se assegnamo la stringa alla variabile
+speciale <CODE>$_</CODE>, che è ovviamente uno scalare. Se facciamo ciò 
+possiamo evitare di usare gli operatori <CODE>=~</CODE> e <CODE>!~</CODE> e 
+scrivere semplicemente
+<P>
+<PRE>
+   if( /goal/ )
+   {
+      print "Stiamo parlando di calcio\n";
+   }
+</PRE>
+<P>La variabile <CODE>$_</CODE> è la variabile predefinita usata da molti operatori
+Perl e tende ad essere sfruttata molto spesso per questo fatto.
+<P>
+<H2><A NAME="ss11.3">11.3 Di più sulle espressioni regolari </A>
+</H2>
+
+<P>
+<P>In una ER ci sono parecchi caratteri speciali, e sono questi che allo stesso
+tempo danno loro tanto potere e le fanno sembrare complicate. E` meglio iniziare
+ad usare le ER un po' alla volta; la loro creazione può essere a volte una
+forma d'arte.
+<P>Ecco qui alcuni caratteri speciali ed il loro significato
+<P>
+<PRE>
+   .  # Qualsiasi carattere singolo 
+      # escluso newline
+   ^  # Inizio di stringa o di riga
+   $  # Fine di stringa o di riga
+   *  # Zero o più occorrenze 
+      #    dell'ultimo carattere
+   ?  # Zero o una occorrenza 
+      #    dell'ultimo carattere
+</PRE>
+<P>e adesso invece esempi di corrispondenze possibili. Si ricordi che le ER
+vanno inserite tra due barre oblique per essere usate.
+<P>
+<PRE>
+   o.a      # "o" seguita da qualsiasi 
+            #    carattere seguito da "a"
+            # Soddisfatta da ora
+            #                oca
+            #                osa
+            # ma non da oa
+            #           orma
+   ^f       # "f" all'inizio di una riga
+   ^yogi    # yogi all'inizio di una riga
+   e$       # "e" alla fine di una riga
+   notte$   # notte a fine riga
+   aiuto*   # aiuto seguito da zero 
+            #    o più caratteri "o"
+            # Soddisfatta da aiut
+            #                aiuto
+            #                aiutoo
+            #                aiutooo (etc.)
+   .*  # Qualsiasi stringa senza 
+       #    un newline. Questo perchè . si 
+       #    abbina a qualsiasi carattere 
+       #    fuorchè newline e * significa 
+       #    zero o più di questi.
+   ^$  # Una riga vuota.
+</PRE>
+<P>Ci sono anche altre possibilità. Le parentesi quadre sono usate per
+indicare che si vuole la corrispondenza con uno qualsiasi dei caratteri 
+contenuti. All'interno di queste parentesi per inserire velocemente
+un'intera sequenza di caratteri consecutivi si può usare il simbolo <CODE>-</CODE> 
+posizionato tra i caratteri estremi, inoltre si può usare il simbolo <CODE>^</CODE> 
+se si desidera esprimere una negazione:
+<P>
+<PRE>
+   [qjk]    # Alternativamente q 
+            #    oppure j oppure k
+   [^qjk]   # Nè q, nè j, nè k
+   [a-z]    # Qualsiasi carattere tra 
+            #    a e z inclusi
+   [^a-z]   # Nessuna lettera minuscola
+   [a-zA-Z] # Qualsiasi lettera
+   [a-z]+   # Qualsiasi sequenza non vuota 
+            #    di lettere minuscole
+</PRE>
+<P>Sapendo queste cose si potrebbe già andare alla fine del capitolo 
+ed essere in grado di fare la maggior parte degli esercizi. Comunque
+per sfruttare al massimo la potenza delle ER, conviene considerare
+anche la parte che segue.
+<P>Una barra verticale | rappresenta un "oppure" e invece una coppia
+di parentesi () può essere usata per raggruppare assieme parti di
+ER quando necessario:
+<P>
+<PRE>
+   arancia|limone # Alternativamente 
+                  #    arancia o limone
+   cas(a|erma) # casa oppure caserma
+   (la)+       # la oppure lala oppure 
+               # lalala oppure ...
+</PRE>
+<P>Qui altri caratteri speciali utili:
+<P>
+<PRE>
+   \n    #  newline
+   \t    #  tab    
+   \w    
+   #  Qualsiasi carattere alfanumerico
+   #  ( equivale a [a-zA-Z0-9_] )
+   \W    
+   #  Qualsiasi carattere non alfanumerico
+   #  ( equivale a [^a-zA-Z0-9_] )           
+   \d 
+   #  Qualsiasi cifra
+   #  ( uguale a [0-9] )
+   \D    
+   #  Qualsiasi carattere non cifra
+   #  ( uguale a [^0-9] )
+   \s    
+   #  Qualsiasi carattere di spazio: 
+   #  spazio, tab, newline, etc.
+   \S    
+   #  Qualsiasi carattere che 
+   #  non è di tipo spazio
+   \b    
+   #  Confine di parola, 
+   #  si può usare solo fuori da []
+   \B    
+   #  Non confine di parola
+</PRE>
+<P>Chiaramente caratteri tipo $, |, [, ), \, / e così via sono casi
+particolari nelle espressioni regolari. Se si desidera richiedere una
+corrispondenza con uno di questi, allora bisogna farli precedere dal simbolo
+barra rovescia (backslash) in questo modo:
+<P>
+<PRE>
+   \|    # Barra verticale
+   \[    # Quadra aperta
+   \)    # Tonda chiusa
+   \*    # Asterisco
+   \^    # Casetta (carat)
+   \/    # Barra (slash)
+   \\    # Barra rovescia (backslash)   
+</PRE>
+<P>e così via.
+<P>
+<H2><A NAME="ss11.4">11.4 Qualche esempio di ER </A>
+</H2>
+
+<P>
+<P>Infine ecco una lista di esempi di complessità crescente per prendere 
+confidenza con le espressioni regolari. Si ricordi che quando le si usa 
+bisogna farle precedere e seguire da barre (slash) di separazione.
+<P>
+<PRE>
+   [01]   # Alternativamente "0" oppure "1"
+   \/0    # Una divisione per zero: "/0"
+   \/ 0   # Una divisione per zero con 
+          #    spazio: "/ 0"   
+   \/\s0  # Una divisione per zero con 
+          #    spazio generico
+   \/ *0  # Divisione per zero con quantità 
+          #    arbitraria di spazi normali
+   \/\s*0 # Divisione per zero con quantità 
+          #    arbitraria di spazi generici
+   \/\s*0\.0*  
+   # Come prima, ma eventualmente con punto 
+   #    decimale e ulteriori zeri dopo di 
+   #    esso. Vengono accettati "/0." 
+   #    e "/0.0" e "/0.00" etc. e "/ 0." 
+   #    e "/  0.00" etc.
+</PRE>
+<P>
+<H2><A NAME="ss11.5">11.5 Esercizio </A>
+</H2>
+
+<P>
+<P>Scrivere un programma che numera progressivamentre tutte e sole
+le righe in entrata che contengono la lettera "v".
+<P>Modificarlo in modo da prendere in considerazione le righe contenenti
+<UL>
+<LI> la stringa "una";</LI>
+<LI> la stringa "una" con iniziale maiuscola o minuscola;</LI>
+<LI> la parola "una" con o senza maiuscola iniziale. 
+Usare <CODE>\b</CODE> per individuare i confini di parola.</LI>
+</UL>
+
+In ogni caso il programma dovrebbe riportare in uscita ogni
+riga data in entrata, ma numerare solo quelle che rispettano
+la caratteristica desiderata. Provare a sfruttare la variabile
+<CODE>$_</CODE> per evitare di usare esplicitamente l'operatore
+di confronto <CODE>=~</CODE>.
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-10.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc11"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-12.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

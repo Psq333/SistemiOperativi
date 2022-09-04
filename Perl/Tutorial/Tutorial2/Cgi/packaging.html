@@ -1,0 +1,93 @@
+<head>
+	<title> CGI Tutorial: Packaging information</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1>
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif"
+     width=48 height=48 alt="">
+Packaging information</h1>
+<hr>
+
+<p>
+
+The QUERY_STRING environment variable can only store one string without
+spaces, but ideally we would like it to store more information. For
+example, when searching a database across the Web we would like to pass
+information not only about what string should be searched for, but also
+what kind of fields should searched, whether the search should be case
+sensitive, and so on. Also, it would be nice to include spaces in search
+strings.
+
+<p>
+
+As it happens this is all possible by encoding spaces and values
+of different variables. Suppose we want to send the following
+information to our CGI script:
+
+<p>
+
+star = Eastwood		<br>
+cert = 15		<br>
+movie = Pale Rider	<br>
+
+<p>
+
+Clearly we need to package this information into a single string for
+the QUERY_STRING environment variable. The way it is done is to
+put an &amp; between each variable setting and replace each space by a
++ sign. From the above we get
+
+<p>
+
+QUERY_STRING = "star=Eastwood&amp;cert=15&amp;movie=Pale+Rider"
+
+<p>
+
+In addition, certain characters are replaced by their value in
+the %xx hexadecimal form. This can all get rather tedious to decode, but
+there's a handy Perl subroutine in
+<a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/read-input">
+~webm/WWW/Perl/Source/read-input</a>
+to ease the strain.
+The latest version of this subroutine (and other useful ones) can be
+found on Steve Brenner's
+<a href="http://www.bio.cam.ac.uk/web/form.html">cgi-lib</a> page.
+The subroutine &read_input takes a query
+string like the above and returns it as an associative array. In the
+above example we would simply call the subroutine in our CGI script as follows:
+<pre>
+%data = &amp;read_input;
+# Now we have
+#    $data{'star'} eq "Eastwood"
+#    $data{'cert'} eq "15"
+#    $data{'movie'} eq "Pale Rider"
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+This exercise is simply to incorporate the &read_input subroutine
+into your eternal document. Your
+query strings should look like page=3 or even page=3&from=2,
+and you should reference the page in an associative array.
+
+
+<p>
+</body>
+
+<hr>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/environment.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/start.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif" width=48 height=48 alt="Start"></a>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/forms.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_right.gif" width=48 height=48 alt="Next"></a>
+
+
+<hr>

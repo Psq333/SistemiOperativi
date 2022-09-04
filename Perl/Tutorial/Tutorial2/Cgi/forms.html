@@ -1,0 +1,233 @@
+<head>
+	<title> CGI Tutorial: Forms</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1>
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif"
+     width=48 height=48 alt="">
+Forms</h1>
+<hr>
+
+<p>
+
+Usually the information supplied by the QUERY_STRING variable
+should come from the user pressing buttons and entering text in
+the HTML document. It is this information we would like to package up and
+send to the CGI script. Each group of buttons and text boxes
+is called a <em>form</em>, and forms are enclosed between the HTML tags
+&lt;form&gt; ... &lt;/form&gt;. You also have to tell it the
+URL to send the information to, and how the information is
+sent. The result is something like this:
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/sam-cgi/answerme"
+      method="GET"&gt;
+Some text in here.
+It can anything except another form.
+&lt;/form&gt;
+</pre>
+The action tag is the URL of the CGI script. The method GET tells
+it to use the QUERY_STRING method of sending information.
+As indicated, almost anything can go between the form tags, including
+text and various types of input devices. In particular we can have...
+
+<p>
+<hr>
+<h2><a name="submit"> Submit buttons</a></h2>
+
+A submit button is the input device that actually calls the URL.
+It has a value which is the message that appears on the button.
+Here is the code for a form with just a submit button in it. When you
+click on the submit button the URL specified in the form's action is
+called.
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET"&gt;
+&lt;input type="submit" value="Click me"&gt;
+&lt;/form&gt;
+</pre>
+The result is a form which looks like this.
+
+<p>
+
+<form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET">
+<input type="submit" value="Click me">
+</form>
+
+<p>
+
+If you click the submit button then the URL will be called. However
+the QUERY_STRING variable will be null because no information was
+specified. The answer is to use...
+
+<p>
+<hr>
+<h2><a name="checkboxes"> Checkboxes</a></h2>
+
+A checkbox is a simple on/off button. A checkbox has a name (its key)
+and a value that this key has when the box is checked.
+As an example, here is the HTML code for a form with a checkbox and a
+submit button in it.
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET"&gt;
+&lt;input type="checkbox" name="lights" value="on"&gt;
+&lt;input type="submit" value="Do it"&gt;
+&lt;/form&gt;
+</pre>
+The result of this code is the following form
+
+<p>
+
+<form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET">
+<input type="checkbox" name="lights" value="on">
+<input type="submit" value="Do it">
+</form>
+
+<p>
+
+Now if the submit button is clicked when the box is checked then
+the information lights=on is packaged into QUERY_STRING. However
+if the box is not checked then no information is packaged into
+QUERY_STRING and it remains empty. Notice also that the checkbox
+does not appear with a message. This is something you have to add
+yourself as ordinary HTML text.
+
+<p>
+
+Here is example HTML code for a form with two checkboxes and
+a message for each.
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET"&gt;
+&lt;input type="checkbox" name="lights" value="on"&gt; Lights
+&lt;input type="checkbox" name="camera" value="on"&gt; Camera
+&lt;input type="submit" value="Do it"&gt;
+&lt;/form&gt;
+</pre>
+The result of this code is the following form
+
+<p>
+
+<form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET">
+<input type="checkbox" name="lights" value="on"> Lights
+<input type="checkbox" name="camera" value="on"> Camera
+<input type="submit" value="Do it">
+</form>
+
+<p>
+
+Click the submit button with various combinations of checked boxes
+and watch how the QUERY_STRING environment variable changes. If
+both boxes are checked then the names are separated by an &amp;
+sign, as we saw earlier.
+
+<p>
+<hr>
+<h2><a name="radio"> Radio buttons</a></h2>
+
+Radio buttons are just like checkboxes except they are grouped
+together and only one button in the group may be selected at a
+time. All the buttons in a group must have the same name
+and each one should have a different value.
+You can also specify which buttons (if any) are checked initially.
+When the submit button is clicked the name and the value of the
+selected button are packaged up for QUERY_STRING.
+
+<p>
+Here is some example code for five such buttons. They are all of type
+radio, and are in the group named cert. The 15 button is checked
+initially.
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET"&gt;
+&lt;input type="radio" name="cert" value="u"&gt;  U
+&lt;input type="radio" name="cert" value="pg"&gt; PG
+&lt;input type="radio" name="cert" value="12"&gt; 12
+&lt;input type="radio" name="cert" value="15" checked&gt; 15
+&lt;input type="radio" name="cert" value="18"&gt; 18
+&lt;input type="submit" value="Certify"&gt;
+&lt;/form&gt;
+</pre>
+
+The result of this HTML code is the following form.
+
+<p>
+<form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET">
+<input type="radio" name="cert" value="u">  U
+<input type="radio" name="cert" value="pg"> PG
+<input type="radio" name="cert" value="12"> 12
+<input type="radio" name="cert" value="15" checked> 15
+<input type="radio" name="cert" value="18"> 18
+<input type="submit" value="Certify">
+</form>
+<p>
+
+Again, try this out for yourself and watch QUERY_STRING change. Notice that
+the value of cert for the U and PG buttons are in lowercase because this
+is what we specified with the value tag.
+
+<p>
+<hr>
+<h2><a name="textboxes"> Text boxes</a></h2>
+
+Finally we deal with text input devices. These are simply boxes into
+which the user can enter some text which is then packaged up
+under a particular name.
+Here is some example code for two text boxes and a submit button.
+The &lt;br&gt; tag causes a line break.
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET"&gt;
+Director: &lt;input type="text" name="dir"&gt;  &lt;br&gt;
+Producer: &lt;input type="text" name="prod"&gt;
+&lt;input type="submit" value="Fire"&gt;
+&lt;/form&gt;
+</pre>
+
+The result is the following form
+<form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET">
+Director: <input type="text" name="dir">  <br>
+Producer: <input type="text" name="prod">
+<input type="submit" value="Fire">
+</form>
+
+Recall that spaces are encoded as + signs and some other characters
+are encoded in their hexadecimal form. Try entering signs like
+&amp;, + and % in particular.
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+Create a Web page like the <a href="teaserver.html"> tea server</a>
+which has checkboxes, radio buttons, a text box and a submit button.
+The form's action should be a URL which can then deal with this
+information usefully. Bear in mind that although we've been looking
+at query strings a lot you can actually forget all that by
+using the
+<a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/read-input">
+&amp;read_input</a> subroutine and an associative array.
+
+
+
+<p>
+</body>
+
+<hr>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/packaging.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/start.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif" width=48 height=48 alt="Start"></a>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/textareas.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

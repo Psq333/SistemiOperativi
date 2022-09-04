@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Funzioni </TITLE>
+ <LINK HREF="perl-tutorial-8.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc9" REL=contents>
+ <LINK HREF="perl-tutorial-10.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-8.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc9"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-10.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s9">9. Funzioni </A></H2>
+
+<P>
+<P>Come ogni buon linguaggio di programmazione anche il Perl permette
+di definire funzioni. Esse possono essere collocate ovunque nel
+programma, ma è probabilmente meglio metterle tutte all'inizio o
+tutte alla fine. Una funzione ha la forma
+<P>
+<PRE>
+   sub funzione_mia
+   {
+      print "Funzione non molto interessante:\n";
+      print "Ogni volta fa la stessa cosa!\n";
+   }
+</PRE>
+
+indipendentemente dagli eventuali parametri che si potrebbero passare.
+Ognuna delle seguenti scritture risulta valida per chiamare una funzione;
+notare che va messa una <CODE>&amp;</CODE> prima del nome effettivo quando si effettua
+una chiamata.
+<P>
+<PRE>
+   # Chiamata semplice
+   &amp;funzione_mia; 
+   # Chiamata con un parametro
+   &amp;funzione_mia($_);
+   # Chiamata con due parametri
+   &amp;funzione_mia(1+2, $_);
+</PRE>
+<P>
+<H2><A NAME="ss9.1">9.1 Parametri </A>
+</H2>
+
+<P>
+<P>Nei casi precedenti i parametri erano accettabili, ma ignorati. Quando
+la funzione è chiamata tutti i parametri sono passati come una lista array
+nella variabile speciale <CODE>@_</CODE>. Questa variabile non ha nessuna relazione 
+con la variabile scalare <CODE>$_</CODE>. La seguente funzione visualizza banalmente
+la lista dei parametri con i quali è stata invocata. Seguono un paio di
+esempi di chiamate.
+<P>
+<PRE>
+   sub scrivi_param
+   {
+      print "@_\n";
+   }
+</PRE>
+<P>
+<PRE>
+   &amp;scrivi_param("re", "nudo"); 
+   &amp;scrivi_param("rana", "e", "bue");
+</PRE>
+<P>Esattamente come con qualsiasi altra lista array, si può accedere ai 
+singoli elementi di <CODE>@_</CODE> con l'operatore parentesi quadre.
+<P>
+<PRE>
+   sub scrivi_i_primi_due
+   {
+      print "Il primo argomento è $_[0]\n";
+      print "e $_[1] è il secondo\n";
+   }
+</PRE>
+<P>Di nuovo bisogna sottolineare che gli scalari <CODE>$_[0]</CODE> e <CODE>$_[1]</CODE> 
+e così via non hanno niente a che fare con lo scalare <CODE>$_</CODE> che può sempre venire 
+usato senza timore di conflitti.
+<P>
+<H2><A NAME="ss9.2">9.2 Ritornare valori </A>
+</H2>
+
+<P>
+<P>Il valore di ritorno di una funzione è sempre l'ultima cosa valutata.
+Questa funzione ritorna il massimo dei due parametri in ingresso.
+Segue un esempio del suo uso.
+<P>
+<PRE>
+   sub massimo
+   {
+      if ($_[0] > $_[1])
+      {
+         $_[0];
+      }
+      else
+      {
+         $_[1];
+      }
+   }
+</PRE>
+<P>
+<PRE>
+   $max = &amp;massimo(37, 24);
+</PRE>
+<P>La funzione <CODE>&amp;scrivi_i_primi_due</CODE> a sua volta ritorna un valore, precisamente 1.
+Questo dipende dal fatto che l'ultima istruzione della fuznione è il comando
+print e il risultato di un comando print che ha avuto successo è sempre 1.
+<P>
+<H2><A NAME="ss9.3">9.3 Variabili locali </A>
+</H2>
+
+<P>
+<P>La variabile <CODE>@_</CODE> è locale alla funzione corrente, lo stesso vale ovviamente
+per <CODE>$_[0]</CODE>, <CODE>$_[1]</CODE>, <CODE>$_[2]</CODE> e così via. 
+Si possono rendere locali anche altre variabili, e questo è utile se vogliamo 
+alterare i parametri in ingresso.
+La seguente funzione testa per vedere se una stringa è dentro ad un'altra,
+senza contare gli spazi. Segue un esempio di chiamata.
+<P>
+<PRE>
+   sub dentro
+   {
+      # rendi le due variabili locali
+      local($a, $b);                 
+      # assegna i valori
+      ($a, $b) = ($_[0], $_[1]);
+      # elimina gli spazi
+      $a =~ s/ //g;      
+      $b =~ s/ //g;      
+      # si ha che $a contiene $b
+      # oppure che $b contiene $a?
+      ($a =~ /$b/ || $b =~ /$a/);  
+   }
+</PRE>
+<P>
+<PRE>
+   &amp;dentro("casa", "marca sapone");
+   # viene ritornato vero
+</PRE>
+<P>A dire il vero le prime righe potevano essere raggruppate in una
+riga sola, in questo mdo:
+<P>
+<PRE>
+   local($a, $b) = ($_[0], $_[1]); 
+</PRE>
+<P>
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-8.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc9"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-10.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

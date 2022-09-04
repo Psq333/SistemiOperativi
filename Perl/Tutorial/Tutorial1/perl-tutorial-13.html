@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Divisione stringhe </TITLE>
+ <LINK HREF="perl-tutorial-12.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc13" REL=contents>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-12.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc13"><IMG SRC="toc.gif" ALT="Contents"></A>
+<IMG SRC="next.gif" ALT="Next">
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s13">13. Divisione stringhe </A></H2>
+
+<P>
+<P>Una funzione molto utile del Perl è <CODE>split</CODE>, che spezza una stringa in
+pezzi mettendoli in un array. Per specificare cosa deve essere considerato
+come separatore si passa a questa funzione un'espressione regolare. 
+Anche <CODE>split</CODE> agisce sulla variabile <CODE>$_</CODE>, se non si specifica
+diversamente.
+<P>Un esempio renderà tutto più chiaro:
+<P>
+<PRE>
+ $info = "Aldo:Riso:attore:via Vai, 3";
+ @dati = split( /:/, $info );
+</PRE>
+<P>Dopo queste due righe gli elementi dell'array <CODE>@dati</CODE> sono costituiti
+dagli spezzoni della stringa <CODE>$info</CODE>, come se avessimo fatto
+<P>
+<PRE>
+ @dati = ( "Aldo", "Riso", "attore",
+           "via Vai, 3" );
+</PRE>
+<P>Se la stringa di partenza viene posta in <CODE>$_</CODE>, allora basta fare
+<P>
+<PRE>
+ @dati = split( /:/ );
+</PRE>
+<P>Se i campi della stringa in ingresso possono essere divisi da un
+separatore meno semplice, non ci sono comunque problemi, basta cambiare
+l'ER passata a <CODE>split</CODE>.
+<P>Così le righe
+<P>
+<PRE>
+ $_ = "Rino:Nero::comico:::via Vai, 4";
+ @dati = split( /:+/ );
+</PRE>
+<P>hanno lo stesso effetto di
+<P>
+<PRE>
+ @dati = ( "Rino", "Nero", "comico", 
+           "via Vai, 4" );
+</PRE>
+<P>mentre invece
+<P>
+<PRE>
+ $_ = "Rino:Nero::comico:::via Vai, 4";
+ @dati = split( /:/ );
+</PRE>
+<P>avrebbe avuto l'effetto di
+<P>
+<PRE>
+ @dati = ( "Rino", "Nero", "", "comico", 
+           "", "", "via Vai, 4 )";
+</PRE>
+<P>Una parola può essere divisa nei caratteri che la compongono, una frase in
+una serie di parole e un paragrafo in una sequenza di frasi:
+<P>
+<PRE>
+ @caratteri = split( //, $parola );
+ @parole = split( / /, $frase );
+ @frasi = split( /\./, $paragrafo );
+</PRE>
+<P>Nel primo caso viene usato come separatore la stringa nulla, per cui
+l'array <CODE>@caratteri</CODE> conterrà una serie di stringhe di lunghezza 
+unitaria come desiderato.
+<P>
+<P>
+<H2><A NAME="ss13.1">13.1 Esercizio </A>
+</H2>
+
+<P>
+<P>Uno strumento utile quando si processa linguaggio naturale è la concordanza.
+Questo permette di visualizzare una stringa specifica nel conteso che la
+circonda, ovunque essa compaia nel testo. Per esempio, un programma che
+cerca le concordanze per la stringa  "per" potrebbe produrre un'uscita
+di questo tipo (notare che le occorrenze della stringa cercata sono state
+allineate al centro):
+<P>
+<PRE>
+ ngustia moltissime persone. Ma cosa fare
+ one. Ma cosa fare, per risolverlo? Eleme
+ azione delle gambe per rallentare o prev
+  l'attività fisica per tonificare la mus
+ ana è lo stile che permette di avere una
+ la testa sollevata per orientarsi in acq
+ essere facilissimo per chi non ha il col
+</PRE>
+<P>L'esercizio consiste proprio nello scrivere un programma di questo tipo.
+Qui alcuni consigli per partire:
+<UL>
+<LI> Leggere l'intero file in un array (questa tecnica oviamente non
+può essere utilizzata in generale, perchè il file potrebbe essere 
+estremamente grande, ma adesso non ci preoccupiamo di questo). Ogni
+elemento dell'array conterrà una riga del file.</LI>
+<LI> Usare la funzione <CODE>chop</CODE> sull'array. Questo equivale a togliere
+l'ultimo carattere (in questo caso il <CODE>newline</CODE>) da ogni elemento 
+dell'array.</LI>
+<LI> Sfruttare la stringa "per" come separatore per la funzione <CODE>split</CODE>
+(al posto di :).
+Sarà allora facile ottenere un array con tutte le stringhe comprese tra due
+successivi "per".</LI>
+<LI> Per ogni occorrenza di "per" scrivere la stringa che lo procede,
+poi "per" ed infine la stringa che lo segue.</LI>
+<LI> Si ricordi che l'ultimo elemento dell'array <CODE>@arr</CODE> ha indice
+<CODE>$#arr</CODE>.</LI>
+</UL>
+<P>A questo punto ci siamo avvicinati allo scopo voluto, ma la stringa
+"per" non è ancora allineata al centro. Per mettere in ordine le stringhe
+conviene allora utilizzare la funzione <CODE>substr</CODE>. Ecco tre esempi del suo
+uso:
+<PRE>
+ substr( "C'era una volta", 3, 4 ); 
+ # restituisce "ra u"
+ 
+ substr( "C'era una volta", 7 ); 
+ # restituisce "na volta"
+ 
+ substr( "C'era una volta", -7, 6 ); 
+ # restituisce "a volt"
+</PRE>
+<P>Nel primo caso viene restituita la sottostringa di lunghezza 4 con inizio
+alla posizione 3. Si ricordi che il primo carattere ha indice 0. Nel
+secondo caso si vede come omettendo la lunghezza si ottenga una sottostringa
+che si estende fino alla fine della stringa di partenza. Infine l'ultimo
+esempio mostra come si possa specificare la posizione di inizio a partire
+dalla fine, usando un indice negativo. Viene ritornata la sottostringa lunga
+6 caratteri che inizia al settimo carattere dalla fine.
+<P>Se si usa un indice negativo che si riferisce ad una posizione che precede
+l'inizio della stringa, allora il Perl non ritornerà nulla e potrebbe generare
+un messaggio di avvertimento. Per evitare questo, eventualmente si può
+aggiungere una lunga sequenza di spazi all'inizio della stringa sulla
+quale si sta operando. Ad esempio:
+<P>
+<PRE>
+ $pippo = " "x30 . $pippo;
+</PRE>
+<P>Come si è visto nel capitolo sulle variabili scalari, l'operatore <CODE>x</CODE>
+serve per ripetere un numero specificato di volte una certa stringa, invece
+<CODE>.</CODE> è l'operatore di concatenazione.
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-12.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc13"><IMG SRC="toc.gif" ALT="Contents"></A>
+<IMG SRC="next.gif" ALT="Next">
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

@@ -1,0 +1,143 @@
+<head>
+	<title> Perl tutorial: Subroutines</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Subroutines</h1>
+<hr>
+
+<p>
+
+Like any good programming langauge Perl allows the user to define
+their own functions, called <em>subroutines</em>. They may be placed
+anywhere in your program but it's probably best to put them
+all at the beginning or all at the end. A subroutine
+has the form
+<pre>
+sub mysubroutine
+{
+	print "Not a very interesting routine\n";
+	print "This does the same thing every time\n";
+}
+</pre>
+regardless of any parameters that we may want to pass to it.
+All of the following will work to call this subroutine.
+Notice that a subroutine is called with an <strong>&amp;</strong> character
+in front of the name:
+<pre>
+&amp;mysubroutine;		# Call the subroutine
+&amp;mysubroutine($_);	# Call it with a parameter
+&amp;mysubroutine(1+2, $_);	# Call it with two parameters
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="parameters"> Parameters</a></h2>
+
+
+In the above case the parameters are acceptable but ignored. When the
+subroutine is called any parameters are passed as a list in the
+special <strong>@_</strong> list
+array variable. This variable has absolutely nothing
+to do with the <strong>$_</strong> scalar variable. The following
+subroutine merely prints out the list that it was called with.
+It is followed by a couple of examples of its use.
+<pre>
+sub printargs
+{
+	print "@_\n";
+}
+
+&printargs("perly", "king");	# Example prints "perly king"
+&printargs("frog", "and", "toad"); # Prints "frog and toad"
+</pre>
+Just like any other list array the individual elements of
+<strong>@_</strong> can
+be accessed with the square bracket notation:
+<pre>
+sub printfirsttwo
+{
+	print "Your first argument was $_[0]\n";
+	print "and $_[1] was your second\n";
+}
+</pre>
+Again it should be stressed that the indexed scalars
+<strong>$_[0]</strong> and <strong>$_[1]</strong> and
+so on have nothing to with the scalar <strong>$_</strong>
+which can also be used without
+fear of a clash.
+
+
+<p>
+<hr>
+<h2><a name="returning"> Returning values</a></h2>
+
+Result of a subroutine is always the last thing evaluated. This
+subroutine returns the maximum of two input parameters. An example of
+its use follows.
+<pre>
+sub maximum
+{
+	if ($_[0] > $_[1])
+	{
+		$_[0];
+	}
+	else
+	{
+		$_[1];
+	}
+}
+
+$biggest = &maximum(37, 24);	# Now $biggest is 37
+</pre>
+The &printfirsttwo subroutine above also returns a value, in this case
+1. This is because the last thing that subroutine did was a
+<strong>print</strong>
+statement and the result of a successful <strong>print</strong> statement
+is always 1.
+
+
+<p>
+<hr>
+<h2><a name="local"> Local variables</a></h2>
+
+The <strong>@_</strong> variable is local to the current subroutine, and so
+of course are <strong>$_[0]</strong>, <strong>$_[1]</strong>,
+<strong>$_[2]</strong>, and so on. Other variables can be made local too,
+and this is useful if we want to start altering the input parameters. The
+following subroutine tests to see if one string is inside another, spaces
+not withstanding. An example follows.
+
+<pre>
+sub inside
+{
+	local($a, $b);			# Make local variables
+	($a, $b) = ($_[0], $_[1]);	# Assign values
+	$a =~ s/ //g;			# Strip spaces from
+	$b =~ s/ //g;			#   local variables
+	($a =~ /$b/ || $b =~ /$a/);	# Is $b inside $a
+					#   or $a inside $b?
+}
+
+&inside("lemon", "dole money");		# true
+</pre>
+In fact, it can even be tidied up by replacing the first two
+lines with
+<pre>
+local($a, $b) = ($_[0], $_[1]);
+</pre>
+
+
+<p>
+</body>
+
+<hr>
+<a href="associative.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+
+<hr>

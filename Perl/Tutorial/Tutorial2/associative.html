@@ -1,0 +1,136 @@
+<head>
+	<title> Perl tutorial: Associative arrays</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Associative arrays</h1>
+<hr>
+
+<p>
+
+Ordinary list arrays allow us to access their element by number. The first
+element of array @food is $food[0]. The second element is $food[1],
+and so on. But Perl also allows us to create arrays which are accessed
+by string. These are called <em>associative arrays</em>.
+
+<p>
+
+To define an associative array we use the usual parenthesis notation, but
+the array itself is prefixed by a % sign. Suppose we want to create an
+array of people and their ages. It would look like this:
+<pre>
+%ages = ("Michael Caine", 39,
+         "Dirty Den", 34,
+         "Angie", 27,
+         "Willy", "21 in dog years",
+         "The Queen Mother", 108);
+</pre>
+Now we can find the age of people with the following expressions
+<pre>
+$ages{"Michael Caine"};		# Returns 39
+$ages{"Dirty Den"};		# Returns 34
+$ages{"Angie"};			# Returns 27
+$ages{"Willy"};			# Returns "21 in dog years"
+$ages{"The Queen Mother"};	# Returns 108
+</pre>
+Notice that
+like list arrays each
+<strong>%</strong> sign has changed to a
+<strong>$</strong> to access an individual
+element because that element is a scalar. Unlike list arrays the
+index (in this case the person's name)
+is enclosed in curly braces, the idea
+being that associative arrays are fancier than list arrays.
+
+<p>
+
+An associative array can be converted back into a list array just by
+assigning it to a list array variable. A list array can be converted
+into an associative array by assigning it to an associative array
+variable. Ideally the list array will have an even number of
+elements:
+<pre>
+@info = %ages;		# @info is a list array. It
+			# now has 10 elements
+$info[5];		# Returns the value 27 from
+			# the list array @info
+%moreages = @info;	# %moreages is an associative
+			# array. It is the same as %ages
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="operators"> Operators</a></h2>
+
+Associative arrays do not have any order to their elements (they
+are just like hash tables) but is it possible to access all
+the elements in turn using the <strong>keys</strong> function and the
+<strong>values</strong> function:
+<pre>
+foreach $person (keys %ages)
+{
+	print "I know the age of $person\n";
+}
+foreach $age (values %ages)
+{
+	print "Somebody is $age\n";
+}
+</pre>
+When <strong>keys</strong> is called it returns a list of the keys
+(indices) of the
+associative array. When <strong>values</strong> is called it returns a list
+of the values of the array. These functions return their lists in
+the same order, but this order has nothing to do with the order
+in which the elements have been entered.
+
+<p>
+
+When <strong>keys</strong> and
+<strong>values</strong> are called in a scalar context they return
+the number of key/value pairs in the associative array.
+
+<p>
+
+There is also a function <strong>each</strong> which returns a two element
+list of a key and its value. Every time <strong>each</strong>
+is called it returns another key/value pair:
+<pre>
+while (($person, $age) = each(%ages))
+{
+	print "$person is $age\n";
+}
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="environment"> Environment variables</a></h2>
+
+When you run a perl program, or any script in UNIX, there will be
+certain environment variables set. These will be things like
+USER which contains your username and DISPLAY which specifies
+which screen your graphics will go to. When you run a perl CGI script
+on the World Wide Web there are environment variables which hold
+other useful information. All these variables and their values are
+stored in the associative <strong>%ENV</strong> array in which the keys
+are the variable names. Try the following in a perl program:
+<pre>
+print "You are called $ENV{'USER'} and you are ";
+print "using display $ENV{'DISPLAY'}\n";
+</pre>
+
+
+<p>
+</body>
+
+<hr>
+<a href="split.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="subroutines.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

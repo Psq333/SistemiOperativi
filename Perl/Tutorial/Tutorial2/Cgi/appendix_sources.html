@@ -1,0 +1,68 @@
+<html>
+<head>
+	<title> CGI tutorial: Source files</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1>
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif"
+     width=48 height=48 alt="">
+Appendix: Source files</h1>
+<hr>
+
+<p>
+
+In case you are interested in how CGI scripts can be written, or if you
+want to compare your attempt at the exercises with mine, here are
+the Perl files used to generate them.
+
+<ul>
+	<li> <a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/environment-example">
+	     Environment example</a>: Generates an HTML document
+	     listing the values of (most of) the current environment
+	     variables.
+
+	<li> <a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/endless">
+	     The endless document</a>: Displays one of the many(!) pages
+	     of a document with infinitely many pages. It uses the
+	     QUERY_STRING environment variable to see what page it should
+	     generate and what the previous page was. The
+	     first page can be found at
+	     <a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/endless?1">
+	     http://www.comp.leeds.ac.uk/cgi-bin/Perl/endless?1</a>.
+
+	<li> <a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/read-input">
+	     &amp;read_input</a>: Just a Perl subroutine to translate
+	     URL-encoded information from the QUERY_STRING environment variable.
+	     It also handles the POST method transparently. This subroutine
+	     is a version of part of the
+	     <a href="http://www.bio.cam.ac.uk/web/form.html">cgi-lib.pl</a>
+	     library of such routines.
+
+	<li> <a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/servetea">
+	     Serve tea</a>: Tells you what drink you've ordered and
+	     that we've just sold out of your favourite cream cake (if any).
+	     It takes input from the
+	     <a href="teaserver.html"> Tea Sever</a>.
+
+	<li> <a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/ta-example">
+	     Text area example</a>: Comments on the contents of a text
+	     area. It is triggered by the last example on the page
+	     about
+	     <a href="textareas.html">text areas and the POST method</a>.
+</ul>
+
+<p>
+</body>
+
+<hr>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/textareas.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/start.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif" width=48 height=48 alt="Start"></a>
+
+<hr>
+</html>

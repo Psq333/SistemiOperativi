@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Eseguire un programma </TITLE>
+ <LINK HREF="perl-tutorial-2.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc3" REL=contents>
+ <LINK HREF="perl-tutorial-4.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-2.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc3"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-4.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s3">3. Eseguire un programma </A></H2>
+
+<P>
+<P>Dopo aver scritto il programma d'esempio con un editor di
+testo, salviamolo su disco. Emacs e nedit sono ottimi editor
+per fare questo, perchè tra l'altro hanno una modalità 
+apposta per scrivere in Perl. Come al solito usate l'editor
+con cui vi trovate meglio.
+<P>Adesso dobbiamo assicurarci che il programma sia eseguibile
+utilizzando il comando
+<PRE>
+   chmod u+x NomeProgramma
+</PRE>
+
+al prompt di UNIX o Linux. Ovviamente al posto di NomeProgramma
+va messo il nome effettivo che abbiamo usato per il file contenente
+il programma. Adesso per lanciare il programma non ci rimane che
+digitare una delle seguenti cose al prompt:
+<PRE>
+   perl NomeProgramma
+   ./NomeProgramma
+   NomeProgramma
+</PRE>
+<P>Se qualcosa va storto, allora potreste ottenere come risultato
+messaggi di errore oppure niente. Per eseguire il programma
+attivando tutti i messaggi di errore e di avvertimento
+basta usare il comando perl in questo modo:
+<PRE>
+   perl -w NomeProgramma
+</PRE>
+
+Questo mostrerà avvertimenti e altri utili (si spera) messaggi
+già prima che parta l'esecuzione vera e propria del programma.
+Invece per eseguire il programma con un debugger usare:
+<PRE>
+   perl -d NomeProgramma
+</PRE>
+<P>Quando si manda in esecuzione un file Perl, prima esso viene compilato
+e poi viene eseguita la versione compilata. Per questa ragione dopo
+una piccola pausa iniziale, il programma dovrebbe girare
+abbastanza veloce. Questo spiega come possa essere "eseguito"
+un file che contiene esclusivamente testo.
+<P>Assicuratevi che il programma giri correttamente prima di procedere.
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-2.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc3"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-4.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

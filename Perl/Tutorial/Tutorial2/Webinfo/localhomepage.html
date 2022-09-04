@@ -1,0 +1,69 @@
+<head>
+      <title> Creating a home page</title>
+      <link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> Creating a home page</h1>
+<hr>
+
+If you want to create your own home page in the School of Computer Studies
+then there's no better place to start than the
+<a href="http://www.ncsa.uiuc.edu/General/Internet/WWW/HTMLPrimer.html">
+Beginner's Guide to HTML</a>. You should find you can set up a home page
+in a matter of minutes. Another excellent tip is that if you like
+something on someone else's page, steal it. Use the View Source option
+(under Mosaic's File menu and Netscape's View menu)
+to see how other people wrote their pages.
+
+<p>
+
+Although undergraduates at Leeds don't generally have their home pages
+on the Web this isn't really a problem. The most useful function
+of a home page is to serve as your own
+well-made hotlist to point to other
+Web sites of interest. Write your home page as an HTML file called, say,
+~/WWW/home.html. Make sure you set the permissions by using the
+UNIX commands
+<pre>
+chmod a+x ~/
+chmod a+x ~/WWW
+chmod a+r ~/WWW/home.html
+</pre>
+Then if your username is sam, for example,
+the local Web address of this file is
+<pre>
+file://localhost/home/csgi/sam/WWW/home.html
+</pre>
+(This is only for the SGIs. For the Suns replace the <code>csgi</code>
+with <code>csun</code>.)
+You can now open this file from Mosaic. Also, it's nice to
+add the following line to the end of your ~/.cshrc file
+<pre>
+setenv WWW_HOME file://localhost/home/csgi/sam/WWW/home.html
+</pre>
+Now whenever you click on your browser's Home button it will take you to
+your home page.
+
+<p>
+
+The only people who can access this page are you and anyone else with
+an account on the same machine. This means you don't really have a
+home page on the Web, just a home page for your own benefit. If you
+aren't satisfied with this then before
+lobbying your user rep you should consider
+<a href="idealhomepage.html">
+what you'd want to put on your Web page</a> that makes global
+access so important. This isn't to say that it should always be forbidden,
+only that it's not as important as some people think.
+
+<p>
+</body>
+
+<hr>
+[ <a href="http://www.comp.leeds.ac.uk/Perl/">Home</a>
+| <a href="http://www.comp.leeds.ac.uk/Perl/Cgi/start.html">CGI scripts</a>
+]
+<hr>

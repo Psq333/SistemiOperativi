@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Sostituzioni </TITLE>
+ <LINK HREF="perl-tutorial-11.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc12" REL=contents>
+ <LINK HREF="perl-tutorial-13.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-11.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc12"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-13.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s12">12. Sostituzioni </A></H2>
+
+<P>
+<P>Oltre a poter trovare se una stringa soddisfa una particolare espressione 
+regolare, il Perl permette di fare sostituzioni basate sulle corrispondeze
+individuate. Il modo per fare questo è usare la funzione <CODE>s</CODE>. Ancora una 
+volta viene utilizzato l'operatore <CODE>=~</CODE>, e ancora una volta se esso 
+viene omesso è presa in condiderazione la variabile <CODE>$_</CODE>.
+<P>Per sostituire un'occorrenza di bologna con Bologna nella stringa 
+<CODE>$frase</CODE> usiamo l'espressione
+<P>
+<PRE>
+   $frase =~ s/bologna/Bologna/
+</PRE>
+<P>e per fare la stessa cosa con la variabile <CODE>$_</CODE> basta invece
+<P>
+<PRE>
+   s/bologna/Bologna/
+</PRE>
+<P>Si noti che le due espressioni regolari (bologna e Bologna) sono circondate
+da un totale di tre barre (slash). Il risultato di questa espressione
+è il numero di sostituzioni fatte, in questo caso 0 oppure 1.
+<P>
+<H2><A NAME="ss12.1">12.1 Opzioni </A>
+</H2>
+
+<P>
+<P>L'esempio appena visto sostituisce solamente la prima occorrenza della stringa,
+ma potrebbe essere che ci siano un numero maggiore di stringhe uguali che 
+desideriamo sostituire. Per fare una sostituzione globale basta mettere una
+<CODE>g</CODE> dopo l'ultima barra, così:
+<P>
+<PRE>
+   s/bologna/Bologna/g
+</PRE>
+<P>Ovviamente adesso stiamo operando sulla variabile <CODE>$_</CODE>. Anche in 
+questo caso l'espressione ritorna il numero di sostituizoni fatte, il valore 
+può essere adesso qualsiasi intero maggiore o uguale a zero.
+<P>Se si vuole essere in grado di sostituire anche occorrenze di bOlogna,
+bolOGNA, BoLOgnA e così via si può usare qualcosa tipo
+<P>
+<PRE>
+   s/[Bb][Oo][Ll][Oo][Gg][Nn][Aa]/Bologna/g
+</PRE>
+<P>ma un modo più semplice è invece usare l'opzione <CODE>i</CODE> (che sta per "ignora
+differenza minuscole/minuscole"). L'espressione
+<P>
+<PRE>
+ s/bologna/Bologna/gi
+</PRE>
+<P>effettuerà una sostituzione globale in tutti i casi voluti.
+L'opzione <CODE>i</CODE> può essere usata anche quando si fa un normale confronto
+come quelli visti nel capitolo precedente.
+<P>
+<H2><A NAME="ss12.2">12.2 Ricordarsi le corrispondenze </A>
+</H2>
+
+<P>
+<P>Spesso è utile ricordarsi quali sottostringhe hanno trovato corrispondenza
+con certe parti dell'espressione regolare, per poterle riutilizzare.
+Succede semplicemente che ogni sottostringa che corrisponde ad una
+parte di espressione regolare racchiusa dentro parentesi tonde 
+viene memorizzata nelle variabili <CODE>$1</CODE>, ..., <CODE>$9</CODE>.
+Queste stringhe possono anche essere usate nella stessa espressione regolare 
+(o sostituzione) attraverso i codici speciali <CODE>\1</CODE>, ..., <CODE>\9</CODE>. 
+Per esempio
+<P>
+<PRE>
+   $_ = "Marchese Alfonso De Filippis";
+   s/([A-Z])/:\1:/g;
+   print "$_\n";
+</PRE>
+<P>sostituirà ogni lettera maiuscola con la lettera stessa circondata da
+due punti. Si otterrà insomma ":M:archese :A:lfonso :D:e :F:ilippis".
+Le variabili <CODE>$1</CODE>, ..., <CODE>$9</CODE> non sono modificabili: 
+sono a sola lettura.
+<P>Come ulteriore esempio, le righe
+<P>
+<PRE>
+   if( /(\b.+\b) \1/ )
+   {
+      print "Trovata $1 ripetuta.\n";
+   }
+</PRE>
+<P>idividueranno qualsiasi parola ripetuta. Ogni <CODE>\b</CODE> rappresenta un
+confine di parola e <CODE>.+</CODE> corrisponde ad una qualsiasi stringa non vuota,
+così <CODE>\b.+\b</CODE> corrisponde ad una qualsiasi parola. Grazie alle 
+parentesi () la parola che soddisfa la corrispondenza viene ricordata 
+nella variabile speciale <CODE>\1</CODE> dentro all'ER oppure nella
+variabile <CODE>$1</CODE> per le righe di programma successive.
+<P>La seguente espressione scambia il primo e l'ultimo carattere nella
+variabile <CODE>$_</CODE>:
+<P>
+<PRE>
+   s/^(.)(.*)(.)$/\3\2\1/
+</PRE>
+<P>I simboli <CODE>^</CODE> e <CODE>$</CODE> corrispondono rispettivamente all'inzizio
+ed alla fine della riga. Il codice speciale <CODE>\1</CODE> conserva il primo
+carattere; <CODE>\2</CODE> conserva tutto il resto fuorchè l'ultimo carattere,
+che viene memorizzato in <CODE>\3</CODE>. A questo punto l'intera riga viene
+sostituita con una versione in cui <CODE>\1</CODE> e <CODE>\3</CODE> sono 
+scambiati. 
+<P>Dopo aver cercato una corrispondenza, si possono usare le variabili speciali
+a sola lettura <CODE>$`</CODE> e <CODE>$&amp;</CODE> e <CODE>$'</CODE> per
+trovare la sottostringa che precede la corrispondenza, quella
+che soddisfa la corrispondenza e quella che segue. Così dopo
+<P>
+<PRE>
+   $_ = "Marchese Alfonso De Filippis";
+   /fo/;
+</PRE>
+<P>le seguenti espressioni sono tutte vere. (Si ricordi che <CODE>eq</CODE> è l'operatore
+di eguaglianza che confronta due variabili considerandole stringhe.)
+<P>
+<PRE>
+   $` eq "Marchese Al";
+   $&amp; eq "fo";
+   $' eq "nso De Filippis";
+</PRE>
+<P>Infine in questa sezione vale la pena di ricordare che all'interno delle
+barre di separazione delle corrispondenze o sostituzioni le variabili
+sono sostituite con il loro contenuto.
+<P>Così
+<P>
+<PRE>
+   $ricerca = "la";
+   s/$ricerca/xxx/g;
+</PRE>
+<P>sostituirà ogni occorrenza di "la" con "xxx". Se si desidera invece 
+sostituire ogni occorrenza di "lavagna", allora non si può fare
+<CODE>s/$ricercavagna/xxx/</CODE>, perchè il Perl penserà che ci
+si stia riferendo alla variabile <CODE>$ricercavagna</CODE>. Invece
+bisogna racchiudere il nome della variabile tra parentesi graffe
+ottenendo quindi
+<P>
+<PRE>
+   $ricerca = "la";
+   s/${ricerca}vagna/xxx/;
+</PRE>
+<P>
+<H2><A NAME="ss12.3">12.3 Trasformazione di caratteri</A>
+</H2>
+
+<P>
+<P>La funzione <CODE>tr</CODE> permette una traduzione (translation) carattere per
+carattere. L'espressione seguente sostituisce nella variabile 
+<CODE>$frase</CODE> ogni "a" con "e", ogni "b" con "d", e ogni "c" con "f".
+Come valore di ritorno viene dato il numero di sostituzioni fatte.
+<P>
+<PRE>
+   $frase =~ tr/abc/edf/;
+</PRE>
+<P>La maggior parte dei codici speciali relativi alle ER non hanno significato
+speciale quando usati nella funzione <CODE>tr</CODE>. Per esempio
+<P>
+<PRE>
+   $cont = ($frase =~ tr/*/*/);
+</PRE>
+<P>conta il numero degli asterischi nella variabile <CODE>$frase</CODE> e
+memorizza il numero ottenuto nella variabile <CODE>$cont</CODE>.
+<P>In ogni caso il trattino - consente ancora di specificare una sequenza
+di caratteri consequtivi. Ecco come fare in modo che <CODE>$_</CODE>
+contenga solo maiuscole:
+<P>
+<PRE>
+   tr/a-z/A-Z/;
+</PRE>
+<P>
+<H2><A NAME="ss12.4">12.4 Esercizio </A>
+</H2>
+
+<P>
+<P>L'ultimo programma scritto dovrebbe contare le righe di un file che
+contengono una certa stringa. Modificarlo in modo che conti le righe
+con un qualsiasi carattere ripetuto. Modificarlo di nuovo in modo
+queste doppie lettere vengano messe in evidenza tra parentesi. Per 
+esempio il programma potrebbe produrre una riga tipo la seguente tra le
+altre:
+<P>
+<PRE>
+ 132 Pi(pp)o o(pp)ure Gia(nn)i.
+</PRE>
+<P>Per fare un programma leggermente più interessante si potrebbe 
+fare in modo che il programma prenda la stringa da cercare come primo
+argomento. Supponiamo che il programma si chiami <CODE>contarighe</CODE>.
+Se esso viene chiamato come
+<P>
+<PRE>
+ ./contarighe primo secondo etc
+</PRE>
+<P>allora gli argomenti vengono salvati nell'array <CODE>@ARGV</CODE>. Nell'esempio
+sopra <CODE>$ARGV[0]</CODE> sarebbe uguale a "primo", <CODE>$ARGV[1]</CODE>
+uguale a "secondo" e così via. Modificare il programma in modo che 
+accetti una stringa come argomento e conti le righe contenenti tale 
+stringa. Dovrebbe inoltre mettere tutte le occorrenze di quella stringa
+tra parentesi. Così
+<P>
+<PRE>
+ ./contarighe la
+</PRE>
+<P>potrebbe dare risultati di questo tipo:
+<P>
+<PRE>
+ 231 Leggo al(la) luce del(la) (la)mpada.
+</PRE>
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-11.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc12"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-13.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

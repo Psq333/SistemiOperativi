@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Variabili scalari </TITLE>
+ <LINK HREF="perl-tutorial-3.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc4" REL=contents>
+ <LINK HREF="perl-tutorial-5.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-3.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc4"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-5.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s4">4. Variabili scalari </A></H2>
+
+<P>
+<P>Una variabile scalare è il tipo più elementare di variabile in Perl.
+Le variabili scalari possono contenere sia stringhe che numeri, inoltre
+stringhe e numeri sono completamente intersambiabili. Per esempio,
+l'espressione
+<PRE>
+   $urgenza = 9;
+</PRE>
+
+imposta la variabile scalare <CODE>$urgenza</CODE> a <CODE>9</CODE>, ma potete anche 
+tranquillamente assegnare una stringa alla stessa identica variabile:
+<PRE>
+   $urgenza = 'grande';
+</PRE>
+
+Perl accetta i numeri anche come stringhe, come in questo caso:
+<PRE>
+   $urgenza = '9';
+   $contatore = '0009';
+</PRE>
+
+e possono ancora essere eseguire operazioni aritmetiche senza particolari 
+problemi.
+<P>In generale i nomi di variabile sono costituiti da numeri, lettere e
+da alcune eventuali occorrenze del carattere <EM>underscore</EM>. Bisogna pero`
+tenere conto che i nomi scelti non devono iniziare con un numero e che
+la variabile <CODE>$_</CODE> è speciale, come vedremo più avanti. Infine è da 
+osservare che Perl distingue tra minuscole e maiuscole, quindi 
+<CODE>$a</CODE> e <CODE>$A</CODE> sono differenti.
+<P>
+<H2><A NAME="ss4.1">4.1 Operazioni e assegnazioni </A>
+</H2>
+
+<P>
+<P>Perl utilizza tutti gli usuali operatori aritmetici del C:
+<PRE>
+   # Somma 1 e 2 e salva il risultato in $a
+   $a = 1 + 2;     
+   # Sottrae 4 da 3 e salva in $a   
+   $a = 3 - 4;     
+   # Moltiplica 5 e 6   
+   $a = 5 * 6;     
+   # Divide 7 per 8 ottenendo 0.875   
+   $a = 7 / 8;     
+   # Nove alla decima   
+   $a = 9 ** 10;   
+   # Il resto di 5 diviso 2   
+   $a = 5 % 2;     
+   # Incrementa di uno $a, 
+   # poi restituisce il suo valore   
+   ++$a;           
+   # Restituisce il valore di $a, 
+   # poi incrementa $a
+   $a++;           
+   # Decrementa, poi restituisce
+   --$a;          
+   # Restituisce, poi decrementa 
+   $a--;           
+</PRE>
+
+Per le stringhe sono inoltre disponibili i seguenti operatori:
+<PRE>
+   $a = $b . $c;   # Concatena $b e $c
+   $a = $b x $c;   # $b ripetuta $c volte
+</PRE>
+
+Per assegnare un valore:
+<PRE>
+   # Assegna il valore $b ad $a
+   $a = $b;  
+   # Incrementa $a di $b unità   
+   $a += $b;       
+   # Sottrae $b da $a   
+   $a -= $b;       
+   # Appende $b alla fine di $a   
+   $a .= $b;       
+</PRE>
+
+Osservare che per fare un assegnazione del tipo <CODE>$a=$b</CODE> viene 
+fatta una copia di <CODE>$b</CODE> e poi assegnata tale copia ad <CODE>$a</CODE>. 
+Per questa ragione la prossima volta che verrà modificata <CODE>$b</CODE> non 
+verrà alterata <CODE>$a</CODE>.
+<P>Altre operazioni ancora possono essere trovate nella pagina di manuale
+<CODE>perlop</CODE>:
+<PRE>
+   man perlop 
+</PRE>
+<P>
+<H2><A NAME="ss4.2">4.2 Interpretazione delle stringhe </A>
+</H2>
+
+<P>
+<P>Il seguente pezzo di codice scrive <CODE>mele e pere</CODE> usando la concatenazione:
+<PRE>
+   $a = 'mele';
+   $b = 'pere';
+   print $a.' e '.$b;
+</PRE>
+
+Sarebbe bello passare una unica stringa quando si chiama la funzione
+di scrittura, ma la riga
+<PRE>
+   print '$a e $b'; 
+</PRE>
+
+scrive in modo letterale <CODE>$a e $b</CODE>, invece di 
+<CODE>mele e pere</CODE>. Per ottenere questo ultimo risultato scrivere:
+<PRE>
+   print "$a and $b";
+</PRE>
+
+Le doppie virgolette forzano l'interpretazione di tutti i codici presenti
+all'interno, i nomi di variabile ad esempio vengono sostituiti con
+il contenuto associato. Altri codici che vengono sostituiti sono i
+caratteri speciali come <EM>newline</EM> e <EM>tab</EM>. Il codice <CODE>\n</CODE> 
+rappresenta <EM>newline</EM> e <CODE>\t</CODE> invece <EM>tab</EM>. 
+<P>
+<H2><A NAME="ss4.3">4.3 Esercizio </A>
+</H2>
+
+<P>
+<P>Riscrivere il programma <EM>Hello world</EM> in modo che (a) la stringa sia
+assegnata ad una variabile e (b) sia stampato il contenuto della variabile
+seguito da un carattere di <EM>newline</EM>. Usare le doppie virgolette invece che
+l'operatore di concatenzione.
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-3.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc4"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-5.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

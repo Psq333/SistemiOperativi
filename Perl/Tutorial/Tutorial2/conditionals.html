@@ -1,0 +1,85 @@
+<head>
+	<title> Perl tutorial: Conditionals</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Conditionals</h1>
+<hr>
+
+<p>
+
+Of course Perl also allows if/then/else statements. These are
+of the following form:
+<pre>
+if ($a)
+{
+	print "The string is not empty\n";
+}
+else
+{
+	print "The string is empty\n";
+}
+</pre>
+For this, remember that an empty string is considered to be false.
+It will also give an "empty" result if $a is the string <em>0</em>.
+
+<p>
+
+It is also possible to include more alternatives in a conditional
+statement:
+<pre>
+if (!$a)			# The ! is the not operator
+{
+	print "The string is empty\n";
+}
+elsif (length($a) == 1)		# If above fails, try this
+{
+	print "The string has one character\n";
+}
+elsif (length($a) == 2)		# If that fails, try this
+{
+	print "The string has two characters\n";
+}
+else				# Now, everything has failed
+{
+	print "The string has lots of characters\n";
+}
+</pre>
+In this, it is important to notice that the elsif statement really
+does have an "e" missing.
+
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+Find a fairly large file that contains some text and some blank lines. The
+file <a href="http://www.comp.leeds.ac.uk/Perl/Misc/electricity.txt">
+~webk/WWW/Perl/Misc/electricity.txt</a> is pretty good because it's funny apart
+from anything else. It was originally posted to our local
+news system by
+<a href="http://www.cs.curtin.edu.au/~david">David O'Brien</a>.
+
+<p>
+
+From the previous exercise
+you should have a program which prints out the password file with line
+numbers. Change it so that works with the text file. Now alter
+the program so that line numbers aren't printed or counted with
+blank lines, but every line is still printed, including the blank ones.
+Remember that when a line of the file is read in it will still
+include its newline character at the end.
+
+<p>
+</body>
+
+<hr>
+<a href="control.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="matching.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

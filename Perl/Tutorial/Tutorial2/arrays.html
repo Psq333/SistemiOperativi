@@ -1,0 +1,145 @@
+<head>
+	<title> Perl tutorial: Array variables</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Array variables</h1>
+<hr>
+
+<p>
+
+A slightly more interesting kind of variable is the <em>array variable</em>
+which is a list of scalars (ie numbers and strings).
+Array variables have the same format as scalar variables except that they
+are prefixed by an <code>@</code> symbol. The statement
+<pre>
+@food  = ("apples", "pears", "eels");
+@music = ("whistle", "flute");
+</pre>
+assigns a three element list to the array variable @food and
+a two element list to the array variable @music.
+
+<p>
+
+The array is accessed by using indices starting from 0,
+and square brackets are used to specify the index. The expression
+<pre>
+$food[2]
+</pre>
+returns <em>eels</em>. Notice that the <strong>@</strong> has changed to
+a <strong>$</strong> because <em>eels</em> is a scalar.
+
+
+<p>
+<hr>
+<h2><a name="assignments"> Array assignments</a></h2>
+
+As in all of Perl, the same expression in a different context can produce
+a different result. The first assignment below
+explodes the @music variable so that it is equivalent to the second
+assignment.
+<pre>
+@moremusic = ("organ", @music, "harp");
+@moremusic = ("organ", "whistle", "flute", "harp");
+</pre>
+This should suggest a way of adding elements to an array. A neater way
+of adding elements is to use the statement
+<pre>
+push(@food, "eggs");
+</pre>
+which pushes <em>eggs</em> onto the end of the array @food. To push two
+or more items onto the array use one of the following forms:
+<pre>
+push(@food, "eggs", "lard");
+push(@food, ("eggs", "lard"));
+push(@food, @morefood);
+</pre>
+The <strong>push</strong> function returns the length of the new list.
+
+<p>
+
+To remove the last item from a list and return it use the
+<strong>pop</strong> function.
+From our original list the <strong>pop</strong> function returns
+<em>eels</em> and @food now has two elements:
+
+<pre>
+$grub = pop(@food);	# Now $grub = "eels"
+</pre>
+
+<p>
+
+It is also possible to assign an array to a scalar variable. As usual
+context is important. The line
+<pre>
+$f = @food;
+</pre>
+assigns the length of @food, but
+<pre>
+$f = "@food";
+</pre>
+turns the list into a string with a space between each element. This
+space can be replaced by any other string by changing the value
+of the special <strong>$"</strong> variable. This variable is just one of
+Perl's many special variables, most of which have odd names.
+
+<p>
+
+Arrays can also be used to make multiple assignments to scalar
+variables:
+<pre>
+($a, $b) = ($c, $d);		# Same as $a=$c; $b=$d;
+($a, $b) = @food;		# $a and $b are the first two
+				# items of @food.
+($a, @somefood) = @food;	# $a is the first item of @food
+				# @somefood is a list of the
+				# others.
+(@somefood, $a) = @food;	# @somefood is @food and
+				# $a is undefined.
+</pre>
+The last assignment occurs because arrays are greedy, and @somefood
+will swallow up as much of @food as it can. Therefore that form
+is best avoided.
+
+<p>
+
+Finally, you may want to find the index of the last element of a list.
+To do this for the @food array use the expression
+<pre>
+$#food
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="displaying"> Displaying arrays</a></h2>
+
+Since context is important, it shouldn't be too surprising that
+the following all produce different results:
+<pre>
+print @food;	# By itself
+print "@food";	# Embedded in double quotes
+print @food."";	# In a scalar context
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+Try out each of the above three print statements to see what they do.
+
+
+<p>
+</body>
+
+<hr>
+<a href="scalars.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="filehandling.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

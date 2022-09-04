@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Gestione file </TITLE>
+ <LINK HREF="perl-tutorial-5.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc6" REL=contents>
+ <LINK HREF="perl-tutorial-7.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-5.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc6"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-7.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s6">6. Gestione file </A></H2>
+
+<P>
+<P>Qui di seguito un programma perl elementare che fa le stesse cose del
+comando UNIX <CODE>cat</CODE> su di un particolare file. Come già osservato in precedenza
+perchè tutto funzioni bene la prima riga deve corrispondere alla configurazione 
+del sistema su cui si sta operando; su molti sistemi ad esempio l'interprete 
+perl non si trova in <CODE>/usr/local/bin/</CODE>, ma invece in <CODE>/usr/bin</CODE>. 
+<P>
+<PRE>
+   #!/usr/local/bin/perl
+   #
+   # Programma per aprire il file pippo.txt, leggerlo,
+   # stamparlo a schermo e infine chiuderlo.
+
+   # Nome del file da leggere
+   $file = 'pippo.txt';
+   # Apre il file
+   open(INFO, $file);
+   # Legge tutto in un array
+   @righe = &lt;INFO>;
+   # Chiude il file
+   close(INFO);
+   # Visualizza l'array
+   print @righe;
+</PRE>
+<P>La funzione <CODE>open</CODE> apre un file in lettura. Il primo argomento è l'identificatore
+di file che permetterà in seguito di riferirsi al file aperto. Il secondo 
+argomento è invece il nome del file da aprire. Se il nome viene dato racchiuso
+tra virgolette singole, allora esso viene usato in modo letterale, senza
+che venga fatta l'espansione da parte della shell. Ad esempio l'espressione
+<CODE>'~/note/CoseDaFare.txt'</CODE> non verrebbe interpretata correttamente. 
+Se si desidera l'interpretazione da parte della shell usare invece le parentesi 
+angolate in questo modo: <CODE>&lt;~/note/CoseDaFare.txt&gt;</CODE>.
+<P>La funzione <CODE>close</CODE> dice al Perl che non ci serve più l'accesso a quel file.
+<P>Ci sono alcune cose utili da aggiungere a proposito della gestione dei file.
+Prima di tutto la funzione <CODE>open</CODE> può anche specificare un file da usare per 
+salvare o appendere i dati in uscita, oltre che per leggere dati in ingresso:
+<P>
+<PRE>
+   # Apre in lettura
+   open(INFO, $file);
+   # Apre in scrittura
+   open(INFO, ">$file");
+   # Apre per appendere l'uscita
+   open(INFO, ">>$file");
+   # Altro modo per aprire in lettura
+   open(INFO, "&lt;$file");
+</PRE>
+<P>In secondo luogo, se si vuole scrivere qualcosa su di un file già aperto
+in scrittura, allora si può usare il comando <CODE>print</CODE> con un argomento addizionale.
+Ad esempio per scrivere una stringa sul file con l'identificatore <CODE>INFO</CODE> usare
+<PRE>
+   print INFO "Scrivo questa riga nel file.\n";
+</PRE>
+<P>A questo punto osserviamo che in modo simile si possono aprire anche lo
+standard input (generalmente associato con la tastiera) e lo standard output
+(generalmente lo schermo):
+<PRE>
+   # Apre lo standard input
+   open(INFO_IN, '-');
+   # Apre lo standard output
+   open(INFO_OUT, '>-');
+</PRE>
+<P>Nel programma visto sopra le informazioni sono lette da un file.
+L'identificatore di tale file è <CODE>INFO</CODE> e si legge da esso usando le parentesi
+angolate. Così l'istruzione
+<PRE>
+   @lines = &lt;INFO>; 
+</PRE>
+
+legge il file associato a <CODE>INFO</CODE> nell'array <CODE>&amp;righe</CODE>. Notare che con questa 
+tecnica il file viene letto tutto in una volta. Questo succede perchè la lettura
+avviene nel contesto di una varabile array. Se invece <CODE>&amp;righe</CODE> venisse sostituito
+dalla variabile scalare <CODE>$riga</CODE>, allora solo una riga verrebbe letta. In entrambi
+i casi ogni riga viene memorizzata completa con il suo carattere di newline alla
+fine.
+<P>
+<H2><A NAME="ss6.1">6.1 Esercizio </A>
+</H2>
+
+<P>
+<P>Modificare il programma appena esaminato in modo che l'intero file venga
+stampato con il simbolo <CODE>#</CODE> all'inizio di ogni riga. E` possibile farlo 
+aggiungendo una riga e modificandone un'altra. Provare a usare la variabile
+speciale <CODE>$"</CODE>. Nel caso si presentassero problemi inaspettati, 
+potrebbe essere utile lanciare il Perl con l'opzione <CODE>-w</CODE>, come gia` visto 
+nella sezione su come eseguire un programma.
+<P>
+<P>
+<P>
+<P>
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-5.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc6"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-7.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

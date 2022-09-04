@@ -1,0 +1,169 @@
+<!doctyPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Array </TITLE>
+ <LINK HREF="perl-tutorial-4.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc5" REL=contents>
+ <LINK HREF="perl-tutorial-6.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-4.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc5"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-6.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s5">5. Array </A></H2>
+
+<P>
+<P>Un tipo interessante di variabile è l'array, che non
+è altro che una sequenza di scalari (numeri o stringhe).
+Le variabili array hanno lo stesso formato delle variabili
+scalari eccetto per il fatto che sono precedute dal simbolo <CODE>@</CODE>
+invece che <CODE>$</CODE>. L'espressione
+<PRE>
+   @cibo = ("mele", "pere", "uva");
+   @musica = ("viola", "flauto");
+</PRE>
+
+assegna una sequenza di tre elementi alla variabile array <CODE>@cibo</CODE>
+e una sequenza di due elementi a <CODE>@musica</CODE>.
+<P>Si accede all'array utilizzando indici che partono da 0.
+L'indice viene racchiuso tra parentesi quadre. L'espressione
+<PRE>
+   $cibo[2]
+</PRE>
+
+ritorna <CODE>uva</CODE>. Notare che al posto di <CODE>@</CODE> si è messo <CODE>$</CODE>, 
+perchè <CODE>uva</CODE> è uno scalare.
+<P>
+<H2><A NAME="ss5.1">5.1 Assegnazione di array </A>
+</H2>
+
+<P>
+<P>Come sempre in Perl, la stessa espressione in contesti diversi
+può produrre risultati differenti. La prima assegnazione qui sotto
+considera i valori scalari estratti da <CODE>@music</CODE> ottenendo in questo caso 
+lo stesso risultato della seconda assegnazione.
+<PRE>
+   @altramusica 
+    = ("organo", @musica, "arpa");
+   @altramusica 
+    = ("organo", "viola", "flauto", "arpa");
+</PRE>
+
+Questo suggerisce un modo per aggiungere elementi ad un array.
+Un modo più pulito di aggiungere elementi è usare l'istruzione
+<PRE>
+   push(@cibo, "uovo");
+</PRE>
+
+che aggiunge <CODE>uovo</CODE> alla fine dell'array <CODE>@cibo</CODE>.
+Per aggiungere due o più elementi all'array ci sono
+ad esempio le seguenti alternative:
+<PRE>
+   push(@cibo, ("uovo", "pane"));
+   push(@cibo, @altrocibo);
+</PRE>
+
+La funzione <CODE>push</CODE> ritorna la lunghezza dell'array dopo l'espansione.
+Per rimuovere l'ultimo elemento da un array e ritornarlo
+usare la funzione <CODE>pop</CODE>.  Ecco <CODE>pop</CODE> prelevare <CODE>pane</CODE>, poi 
+<CODE>$cibo</CODE> ha due elementi:
+<PRE>
+   $fame = pop(@cibo);     
+   # Ora $fame = "pane"
+</PRE>
+
+E` anche possibile assegnare un array ad una variabile scalare.
+Il contesto è importante. La riga
+<PRE>
+   $f = @cibo;
+</PRE>
+
+assegna a <CODE>$f</CODE> la lunghezza di <CODE>@cibo</CODE>, ma
+<PRE>
+   $f = "@cibo";
+</PRE>
+
+Sostituisce al nome dell'array una stringa che rappresenta i suoi
+elementi separati fra di loro da spazi.
+Al posto dello spazio di separazione si può mettere qualsiasi 
+altra stringa cambiando il valore della variabile speciale <CODE>$"</CODE>.
+Questa variabile è una delle tante variabili speciali del perl,
+la maggior parte delle quali ha nomi strani.
+<P>Gli array possono anche essere usati per fare assegnazioni multiple
+a variabili scalari:
+<PRE>
+   # Lo stesso che fare $a=$c; $b=$d;
+   ($a, $b) = ($c, $d);       
+   # $a e $b sono i primi due elementi di @cibo   
+   ($a, $b) = @cibo;          
+   # $a è il primo elemento di @cibo   
+   # @delcibo è un array contente gli altri   
+   ($a, @delcibo) = @cibo;    
+   # @delcibo è uguale a @cibo, 
+   # mentre $a non è definita                              
+   (@delcibo, $a) = @cibo;   
+</PRE>
+
+Osservare che gli array sono ingordi e che nell'ultima assegnazione 
+<CODE>$delcibo</CODE> prenderà così tanto <CODE>@cibo</CODE> quanto può, lasciando 
+$a non definita. E` meglio quindi evitare questa forma.
+<P>Infine potreste voler trovare l'indice dell'ultimo elemento di un array.
+Nel caso dell'array <CODE>@cibo</CODE> si può trovare tale valore nella seguente 
+variabile associata ad esso:
+<PRE>
+   $#cibo
+</PRE>
+<P>
+<H2><A NAME="ss5.2">5.2 Visualizzare array </A>
+</H2>
+
+<P>
+<P>Dal momento che il contesto è importante, non dovrebbe essere sorprendente
+che le seguenti righe producono ognuna un risultato diverso:
+<PRE>
+   # da solo
+   print @cibo;    
+   # circondato da doppie virgolette   
+   print "@cibo";  
+   # in un contesto scalare
+   print $cibo.""; 
+</PRE>
+<P>
+<H2><A NAME="ss5.3">5.3 Esercizio </A>
+</H2>
+
+<P>
+<P>Provare ognuna delle precedenti modalità di stampa per vedere
+quali sono le differenze di comportamento.
+<P>
+<P>
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-4.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc5"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-6.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>

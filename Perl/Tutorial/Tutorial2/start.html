@@ -1,0 +1,173 @@
+<head>
+	<title> Perl tutorial: Start</title>
+</head>
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Perl Tutorial: Start</h1>
+<hr>
+
+<p>
+
+This is the start of a tutorial on Perl, originally run by me, Nik Silver,
+as the first part of a one-day hands-on workshop
+at the <a href="http://www.comp.leeds.ac.uk/"> School of Computer Studies</a>,
+<a href="http://www.leeds.ac.uk/"> University of Leeds</a>, in the UK.
+The second part of the workshop looked at
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/start.html">
+designing pages for the World Wide Web</a>
+using Perl to deal with buttons and
+text boxes to generate custom Web pages on the fly.
+Creating a Web page without all these things is a much easier
+task. There is information about
+<a href="http://www.comp.leeds.ac.uk/Perl/Webinfo/localhomepage.html">
+how to do this at Leeds</a>
+but otherwise you should look at NCSA's definitive
+<a href="http://www.ncsa.uiuc.edu/General/Internet/WWW/HTMLPrimer.html">
+Beginner's Guide to HTML</a>.
+
+<p>
+
+There are plenty of other Perl tutorials around, and most (if not all)
+of them can be found at the <a href="http://www.cis.ufl.edu/perl/">
+UF/NA Perl Archive</a>.
+However I
+wanted something that included
+exercises developing a consistent theme; none of the others seemed to do
+this.
+
+<p>
+
+This tutorial assumes a very basic knowledge of UNIX and concentrates
+on how to write basic working perl programs. It does not explain <em>why</em>
+many things are as they are, nor does it draw generalisations about
+the language; it is assumed that the reader can make most of these inferences
+correctly for themselves. You can find more information on those topics
+elsewhere (see above).
+
+<p>
+
+This tutorial is available in plain text format on anonymous FTP at
+<a href="ftp://agora.leeds.ac.uk/scs/doc">
+ftp://agora.leeds.ac.uk/scs/doc/</a>. The first file to get is
+<code>whole-perl-tutorial.readme</code> which explains what to do about
+the main file <code>whole-perl-tutorial.txt.gz</code>.
+
+<p>
+
+Thanks to <a href="http://www.khoros.unm.edu/staff/neilb/">Neil
+Bowers</a> whose
+<a href="http://www.khoros.unm.edu/staff/neilb/perl/home.html">
+Perl page</a> is where I ripped off the camel icon (though he ripped
+it off someone before me, of course) and to our Support team for
+their technical wizardry.
+
+<p>
+
+The structure of this tutorial is as follows:
+
+<ul>
+	<li> <a href="basic.html"> A basic perl program</a>
+	<ul>
+		<li> <a href="basic.html#firstline">
+		     The first line</a>
+		<li> <a href="basic.html#statements">
+		     Comments and statements</a>
+		<li> <a href="basic.html#printing">
+		     Simple printing</a>
+	</ul>
+	<li> <a href="running.html"> Running the program</a>
+	<li> <a href="scalars.html"> Scalar variables</a>
+	<ul>
+		<li> <a href="scalars.html#operations">
+		     Operations and assignment</a>
+		<li> <a href="scalars.html#interpolation">
+		     Interpolation</a>
+		<li> <a href="scalars.html#exercise">
+		     Exercise</a>
+	</ul>
+	<li> <a href="arrays.html"> Array variables</a>
+	<ul>
+		<li> <a href="arrays.html#assignments">
+		     Array assignments</a>
+		<li> <a href="arrays.html#displaying">
+		     Displaying arrays</a>
+		<li> <a href="arrays.html#exercise">
+		     Exercise</a>
+	</ul>
+	<li> <a href="filehandling.html"> Filehandling</a>
+	<ul>
+		<li> <a href="filehandling.html#exercise">
+		     Exercise</a>
+	</ul>
+	<li> <a href="control.html"> Control structures</a>
+	<ul>
+		<li> <a href="control.html#foreach">
+		     foreach</a>
+		<li> <a href="control.html#testing">
+		     Testing</a>
+		<li> <a href="control.html#for">
+		     for</a>
+		<li> <a href="control.html#while">
+		     while and until</a>
+		<li> <a href="control.html#exercise">
+		     Exercise</a>
+	</ul>
+	<li> <a href="conditionals.html"> Conditionals</a>
+	<ul>
+		<li> <a href="conditionals.html#exercise">
+		     Exercise</a>
+	</ul>
+	<li> <a href="matching.html"> String matching</a>
+	<ul>
+		<li> <a href="matching.html#res">
+		     Regular expressions</a>
+		<li> <a href="matching.html#dollarund">
+		     The $_ special variable</a>
+		<li> <a href="matching.html#moreres">
+		     More on REs</a>
+		<li> <a href="matching.html#exampleres">
+		     Some example REs</a>
+		<li> <a href="matching.html#exercise">
+		     Exercise</a>
+	</ul>
+	<li> <a href="sandtr.html"> Substitution and translation</a>
+	<ul>
+		<li> <a href="sandtr.html#options">
+		     Options</a>
+		<li> <a href="sandtr.html#remembering">
+		     Remembering patterns</a>
+		<li> <a href="sandtr.html#translation">
+		     Translation</a>
+		<li> <a href="sandtr.html#exercise">
+		     Exercise</a>
+	</ul>
+	<li> <a href="split.html"> Split</a>
+	<ul>
+		<li> <a href="split.html#exercise">
+		     Exercise</a>
+	</ul>
+	<li> <a href="associative.html"> Associative arrays</a>
+	<ul>
+		<li> <a href="associative.html#operators">
+		     Operators</a>
+		<li> <a href="associative.html#environment">
+		     Environment variables</a>
+	</ul>
+	<li> <a href="subroutines.html"> Subroutines</a>
+	<ul>
+		<li> <a href="subroutines.html#parameters">
+		     Parameters</a>
+		<li> <a href="subroutines.html#returning">
+		     Returning values</a>
+		<li> <a href="subroutines.html#local">
+		     Local variables</a>
+	</ul>
+</ul>
+
+<p>
+</body>
+<hr>
+	<a href="http://www.comp.leeds.ac.uk/scs/public/services/info.html">Back to SCS Miscellaneous Information</a>
+<hr>

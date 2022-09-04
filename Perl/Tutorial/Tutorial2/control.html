@@ -1,0 +1,189 @@
+<head>
+	<title> Perl tutorial: Control structures</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Control structures</h1>
+<hr>
+
+<p>
+
+More interesting possiblities arise when we introduce control structures
+and looping. Perl supports lots of different kinds of control structures
+which tend to be like those in C, but are very similar to Pascal, too.
+Here we discuss a few of them.
+
+
+<p>
+<hr>
+<h2><a name="foreach"> foreach</a></h2>
+
+To go through each line of an array or other list-like structure
+(such as lines in a file) Perl uses the foreach structure. This has
+the form
+<pre>
+foreach $morsel (@food)		# Visit each item in turn
+				# and call it $morsel
+{
+	print "$morsel\n";	# Print the item
+	print "Yum yum\n";	# That was nice
+}
+</pre>
+The actions to be performed each time are enclosed in a block
+of curly braces.
+The first time through the block $morsel is assigned the value of
+the first item in the array @food. Next time it is assigned the
+value of the second item, and so until the end. If @food is empty
+to start with then the block of statements is never executed.
+
+
+<p>
+<hr>
+<h2><a name="testing"> Testing</a></h2>
+
+The next few structures rely on a test being true or false. In Perl
+any non-zero number and non-empty string is counted as true.
+The number zero,
+zero by itself in a string, and
+the empty string are counted as false. Here are some tests on numbers
+and strings.
+<pre>
+$a == $b		# Is $a numerically equal to $b?
+			# Beware: Don't use the = operator.
+$a != $b		# Is $a numerically unequal to $b?
+$a eq $b		# Is $a string-equal to $b?
+$a ne $b		# Is $a string-unequal to $b?
+</pre>
+
+<p>
+
+You can also use logical and, or and not:
+<pre>
+($a && $b)		# Is $a and $b true?
+($a || $b)		# Is either $a or $b true?
+!($a)			# is $a false?
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="for"> for</a></h2>
+
+Perl has a <strong>for</strong> structure that mimics that of C.
+It has the form
+<pre>
+for (<em>initialise</em>; <em>test</em>; <em>inc</em>)
+{
+	<em> first_action;</em>
+	<em> second_action;</em>
+	<em> etc</em>
+}
+</pre>
+First of all the statement <em>initialise</em> is executed. Then while
+<em>test</em> is true the block of actions is executed. After each
+time the block is executed <em>inc</em> takes place. Here is an
+example for loop to print out the numbers 0 to 9.
+<pre>
+for ($i = 0; $i &lt; 10; ++$i)	# Start with $i = 1
+				# Do it while $i &lt; 10
+				# Increment $i before repeating
+{
+	print "$i\n";
+}
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="while"> while and until</a></h2>
+
+Here is a program that reads some input from the keyboard and won't
+continue until it is the correct password
+<pre>
+#!/usr/local/bin/perl
+print "Password? ";		# Ask for input
+$a = &lt;STDIN&gt;;			# Get input
+chop $a;			# Remove the newline at end
+while ($a ne "fred")		# While input is wrong...
+{
+    print "sorry. Again? ";	# Ask again
+    $a = &lt;STDIN&gt;;		# Get input again
+    chop $a;			# Chop off newline again
+}
+</pre>
+The curly-braced block of code is executed while the input does
+not equal the password. The <strong>while</strong>
+structure should be fairly clear,
+but this is the opportunity to notice several things. First, we can
+we read from the standard input (the keyboard) without opening the
+file first. Second, when the password is entered $a is given that
+value including the newline character at the end. The
+<strong>chop</strong> function
+removes the last character of a string which in this case is the
+newline.
+
+<p>
+
+To test the opposite thing we can use the <strong>until</strong> statement
+in just the same way. This executes the block repeatedly until the
+expression is true, not while it is true.
+
+<p>
+
+Another useful technique is putting the <strong>while</strong> or
+<strong>until</strong> check at the end of the statement block rather
+than at the beginning. This will require the presence of the
+<strong>do</strong> operator to mark the beginning of the block and
+the test at the end. If we forgo the <em>sorry. Again</em> message
+in the above password program then it could be written like this.
+<pre>
+#!/usr/local/bin/perl
+do
+{
+	"Password? ";		# Ask for input
+	$a = &lt;STDIN&gt;;		# Get input
+	chop $a;		# Chop off newline
+}
+while ($a ne "fred")		# Redo while wrong input
+</pre>
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+Modify the program from the previous exercise so that each line of the file
+is read in one by one and is output with a line number at the beginning.
+You should get something like:
+<pre>
+1 root:oYpYXm/qRO6N2:0:0:Super-User:/:/bin/csh
+2 sysadm:*:0:0:System V Administration:/usr/admin:/bin/sh
+3 diag:*:0:996:Hardware Diagnostics:/usr/diags:/bin/csh
+<em>etc</em>
+</pre>
+You may find it useful to use the structure
+<pre>
+while ($line = &lt;INFO&gt;)
+{
+	...
+}
+</pre>
+
+When you have done this see if you can alter it so that line numbers are
+printed as 001, 002, ..., 009, 010, 011, 012, etc. To do this you should
+only need to
+change one line by inserting an extra four characters. Perl's clever like
+that.
+
+<p>
+</body>
+
+<hr>
+<a href="filehandling.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="conditionals.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

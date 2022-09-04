@@ -1,0 +1,255 @@
+<head>
+	<title> Perl tutorial: Substitution and translation</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Substitution and translation</h1>
+<hr>
+
+<p>
+
+As well as identifying regular expressions Perl can make
+substitutions based on those matches. The way to do this is to
+use the <strong>s</strong> function which is designed to mimic the
+way substitution is done in the vi text editor. Once again the
+match operator is used, and once again if it is omitted then the
+substitution is assumed to take place with the <strong>$_</strong> variable.
+
+<p>
+
+To replace an occurrence of <em>london</em> by <em>London</em> in
+the string $sentence we use the expression
+<pre>
+$sentence =~ s/london/London/
+</pre>
+and to do the same thing with the <strong>$_</strong> variable just
+<pre>
+s/london/London/
+</pre>
+Notice that the two regular expressions
+(<em>london</em> and <em>London</em>)
+are surrounded by a total of three slashes.
+The result of this expression is the number of substitutions made, so
+it is either 0 (false) or 1 (true) in this case.
+
+<p>
+
+<p>
+<hr>
+<h2><a name="options"> Options</a></h2>
+
+This example only replaces the first occurrence of the string, and it may
+be that there will be more than one such string we want to replace.
+To make a global substitution the last slash is followed by a
+<strong>g</strong> as follows:
+<pre>
+s/london/London/g
+</pre>
+which of course works on the <strong>$_</strong> variable.
+Again the expression returns
+the number of substitutions made, which is 0 (false) or something greater
+than 0 (true).
+
+<p>
+
+If we want to also replace
+occurrences of <em>lOndon</em>, <em>lonDON</em>, <em>LoNDoN</em> and
+so on then we could use
+<pre>
+s/[Ll][Oo][Nn][Dd][Oo][Nn]/London/g
+</pre>
+but an easier way is to use the <strong>i</strong> option
+(for "ignore case"). The expression
+<pre>
+s/london/London/gi
+</pre>
+will make a global substitution ignoring case. The <strong>i</strong> option
+is also used in the basic
+<strong>/</strong>...<strong>/</strong>
+regular expression match.
+
+<p>
+
+<p>
+<hr>
+<h2><a name="remembering"> Remembering patterns</a></h2>
+
+It's often useful to remember patterns that have been matched so that
+they can be used again. It just so happens that anything matched in
+parentheses gets remembered in the variables
+<strong>$1</strong>,...,<strong>$9</strong>. These
+strings can also be used in the same regular expression (or substitution)
+by using the special RE codes
+<strong>\1</strong>,...,<strong>\9</strong>. For example
+<pre>
+$_ = "Lord Whopper of Fibbing";
+s/([A-Z])/:\1:/g;
+print "$_\n";
+</pre>
+will replace each upper case letter by that letter surrounded by colons.
+It will print <em>:L:ord :W:hopper of :F:ibbing</em>.
+The variables
+<strong>$1</strong>,...,<strong>$9</strong>
+are read-only variables; you cannot alter them yourself.
+
+<p>
+
+As another example, the test
+<pre>
+if (/(\b.+\b) \1/)
+{
+	print "Found $1 repeated\n";
+}
+</pre>
+will identify any words repeated. Each <strong>\b</strong>
+represents a word boundary and
+the <strong>.+</strong> matches any non-empty string, so
+<strong>\b.+\b</strong> matches anything between two
+word boundaries. This is then remembered by the parentheses and stored as
+<strong>\1</strong> for regular expressions and as
+<strong>$1</strong> for the rest of the program.
+
+<p>
+
+The following swaps the first and last characters of a line in the
+<strong>$_</strong>
+variable:
+<pre>
+s/^(.)(.*)(.)$/\3\2\1/
+</pre>
+The <strong>^</strong> and <strong>$</strong> match the beginning and
+end of the line.
+The <strong>\1</strong> code stores the first character;
+the <strong>\2</strong> code stores everything
+else up the last character which is stored in
+the <strong>\3</strong> code.
+Then that whole line is replaced with <strong>\1</strong>
+and <strong>\3</strong> swapped round.
+
+<p>
+
+After a match, you can use the special read-only variables
+<strong>$`</strong> and
+<strong>$&amp;</strong> and
+<strong>$'</strong> to
+find what was matched before, during and after the seach. So after
+<pre>
+$_ = "Lord Whopper of Fibbing";
+/pp/;
+</pre>
+all of the following are true.
+(Remember that eq is the string-equality test.)
+<pre>
+$` eq "Lord Wo";
+$&amp; eq "pp";
+$' eq "er of Fibbing";
+</pre>
+
+<p>
+
+Finally on the subject of remembering patterns it's worth knowing
+that inside of the slashes of a match or a substitution variables
+are interpolated. So
+<pre>
+$search = "the";
+s/$search/xxx/g;
+</pre>
+will replace every occurrence of <em>the</em> with <em>xxx</em>. If you
+want to replace every occurence of <em>there</em> then you cannot
+do <strong>s/$searchre/xxx/</strong> because this will be interpolated
+as the variable $searchre. Instead you should put the variable name
+in curly braces so that the code becomes
+<pre>
+$search = "the";
+s/${search}re/xxx/;
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="translation"> Translation</a></h2>
+
+The <strong>tr</strong> function allows character-by-character translation.
+The following expression
+replaces each <em>a</em> with <em>e</em>, each <em>b</em> with <em>d</em>,
+and each <em>c</em> with <em>f</em> in the variable $sentence.
+The expression returns the number
+of substitutions made.
+<pre>
+$sentence =~ tr/abc/edf/
+</pre>
+
+<p>
+
+Most of the special RE codes do not apply in the tr function. For example,
+the statement here
+counts the number of asterisks in the $sentence variable and stores that
+in the $count variable.
+<pre>
+$count = ($sentence =~ tr/*/*/);
+</pre>
+However, the dash is still used to mean
+"between". This statement converts <strong>$_</strong> to upper case.
+<pre>
+tr/a-z/A-Z/;
+</pre>
+
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+Your current program should count lines of a file which contain a
+certain string. Modify it so that it counts lines with double letters
+(or any other double character).
+Modify it again so that
+these double letters appear also in parentheses. For example
+your program would produce a line like this among others:
+<pre>
+023 Amp, James Wa(tt), Bob Transformer, etc. These pion(ee)rs conducted many
+</pre>
+Try to get it so that all pairs of letters are in
+parentheses, not just the first pair on each line.
+
+<p>
+
+For a slightly more interesting program you might like to try the following.
+Suppose your program is called countlines. Then you would call it with
+<pre>
+./countlines
+</pre>
+However, if you call it with several arguments, as in
+<pre>
+./countlines first second etc
+</pre>
+then those arguments are stored in the array
+<strong>@ARGV</strong>. In the
+above example we have <strong>$ARGV[0]</strong> is <em>first</em> and
+<strong>$ARGV[1]</strong> is
+<em>second</em> and
+<strong>$ARGV[2]</strong> is <em>etc</em>. Modify your program
+so that it accepts one argument and counts only those lines with
+that string. It should also put occurrences of this string in paretheses.
+So
+<pre>
+./countlines the
+</pre>
+will output something like this line among others:
+<pre>
+019 But (the) greatest Electrical Pioneer of (the)m all was Thomas Edison, who
+</pre>
+
+
+<p>
+</body>
+
+<hr>
+<a href="matching.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="split.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

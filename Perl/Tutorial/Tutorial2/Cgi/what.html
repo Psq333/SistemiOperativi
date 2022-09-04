@@ -1,0 +1,75 @@
+<head>
+	<title> CGI Tutorial: What CGI scripts are</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1>
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif"
+     width=48 height=48 alt="">
+What CGI scripts are</h1>
+<hr>
+
+<p>
+
+Normally when a Web browser looks up a URL the following happens. First
+your computer contacts the HTTP server with the URL. The HTTP server
+looks at the filename requested by your computer and then sends that
+file back. Your computer then displays the file in the appropriate
+format.
+
+<p>
+
+However, it is possible to set up the HTTP server so that whenever
+a file in a certain directory is requested that file is not sent back;
+instead it is executed as a program, and whatever that program
+outputs is sent back for your computer to display. 
+This function is called the <em>Common Gateway Interface</em> or
+CGI. The programs are called <em>CGI scripts</em>. The directory
+that the CGI scripts sit in cannot be specified by you alone - you
+need the help of whoever runs your HTTP server.
+
+<p>
+
+In the School of Computer Studies here at Leeds it's
+Support who run the HTTP server.
+If you have an account here and you ask Support to give you a Web page 
+and a CGI directory they tell the HTTP server where to look for your
+Web files. For example, if your username is sam
+then your Web pages can be put in directory /home/www/sam and your CGI
+scripts in directory /home/www/cgi-bin/sam. When Support are told this
+they make sure that when someone sends URL
+<pre>
+http://www.comp.leeds.ac.uk/sam/<em>filename</em>
+</pre>
+then the file /home/www/sam/<em>filename</em> is sent back. And
+when they send the URL
+<pre>
+http://www.comp.leeds.ac.uk/cgi-bin/sam/<em>filename</em>
+</pre>
+then the file /home/www/cgi-bin/sam/<em>filename</em> is executed.
+In all cases you have to set the permissions of the files and
+directories so that everyone can read them. You also have to
+set the permissions of all the directories and the CGI scripts so
+that they are executable by everyone.
+
+<p>
+
+In summary
+CGI scripts are programs which can generate and send back anything:
+sound, pictures, HTML documents, and so on. In this tutorial we concentrate
+on generating and sending back HTML documents.
+
+<p>
+</body>
+
+<hr>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/start.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif" width=48 height=48 alt="Start"></a>
+<a href="http://www.comp.leeds.ac.uk/Perl/Cgi/simple.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_right.gif" width=48 height=48 alt="Next"></a>
+
+
+<hr>

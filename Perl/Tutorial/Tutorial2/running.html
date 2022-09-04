@@ -1,0 +1,70 @@
+<head>
+	<title> Perl tutorial: Running the program</title>
+</head>
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Running the program</h1>
+<hr>
+
+<p>
+
+Type in the example program using a text editor, and save it.
+Emacs is a good editor to use for this because it has its own Perl
+mode which formats lines nicely when you hit tab (use `M-x perl-mode').
+But as ever, use whichever you're most comfortable with.
+
+<p>
+
+After you've entered and saved the program make sure
+the file is executable by using the command
+<pre>
+chmod u+x <em>progname</em>
+</pre>
+at the UNIX prompt,
+where <em>progname</em> is the filename of the program. Now to
+run the program just type any of the following at the prompt.
+<pre>
+perl <em>progname</em>
+./<em>progname</em>
+<em>progname</em>
+</pre>
+
+<p>
+
+If something goes wrong then you may get error messages, or you
+may get nothing. You can always run the program with warnings using
+the command
+<pre>
+perl -w <em>progname</em>
+</pre>
+at the prompt. This will display warnings and other (hopefully) helpful
+messages before it tries to execute the program. To run the
+program with a debugger use the command
+<pre>
+perl -d <em>progname</em>
+</pre>
+
+<p>
+
+When the file is executed Perl first compiles it and then executes
+that compiled version. So after a short pause for compilation the program
+should run quite quickly. This also explains why you can get compilation
+errors when you execute a Perl file which consists only of text.
+
+<p>
+
+Make sure your program works before proceeding. The program's output
+may be slightly unexpected - at least it isn't very pretty. We'll
+look next at variables and then tie this in with prettier printing.
+
+</body>
+
+<hr>
+<a href="basic.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="scalars.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>
+

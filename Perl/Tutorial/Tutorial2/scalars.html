@@ -1,0 +1,125 @@
+<head>
+	<title> Perl tutorial: Scalar variables</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1> <img src="Images/icon_camel.gif" height=48 width=48 align=bottom alt="">
+Scalar variables</h1>
+<hr>
+
+<p>
+
+The most basic kind of variable in Perl is the <em> scalar variable</em>.
+Scalar variables hold both strings and numbers, and are remarkable in
+that strings and numbers are completely interchangable. For example,
+the statement
+<pre>
+$priority = 9;
+</pre>
+sets the scalar variable $priority to 9, but you can also assign a string
+to exactly the same variable:
+<pre>
+$priority = 'high';
+</pre>
+Perl also accepts numbers as strings, like this:
+<pre>
+$priority = '9';
+$default = '0009';
+</pre>
+and can still cope with arithmetic and other operations quite happily.
+
+<p>
+
+In general variable names consists of numbers, letters and underscores, but
+they should not start with a number and the variable <strong>$_</strong> is
+special, as we'll see later. Also, Perl is case sensitive, so
+$a and $A are different.
+
+
+<p>
+<hr>
+<h2><a name="operations"> Operations and Assignment</a></h2>
+
+Perl uses all the usual C arithmetic operators:
+<pre>
+$a = 1 + 2;	# Add 1 and 2 and store in $a
+$a = 3 - 4;	# Subtract 4 from 3 and store in $a
+$a = 5 * 6;	# Multiply 5 and 6
+$a = 7 / 8;	# Divide 7 by 8 to give 0.875
+$a = 9 ** 10;	# Nine to the power of 10
+$a = 5 % 2;	# Remainder of 5 divided by 2
+++$a;		# Increment $a and then return it
+$a++;		# Return $a and then increment it
+--$a;		# Decrement $a and then return it
+$a--;		# Return $a and then decrement it
+</pre>
+and for strings Perl has the following among others:
+<pre>
+$a = $b . $c;	# Concatenate $b and $c
+$a = $b x $c;	# $b repeated $c times
+</pre>
+To assign values Perl includes
+<pre>
+$a = $b;	# Assign $b to $a
+$a += $b;	# Add $b to $a
+$a -= $b;	# Subtract $b from $a
+$a .= $b;	# Append $b onto $a
+</pre>
+Note that when Perl assigns a value with <strong>$a = $b</strong> it makes
+a copy of $b and then assigns that to $a. Therefore the next time you change
+$b it will not alter $a.
+
+<p>
+
+Other operators can be found on the <strong>perlop</strong> manual page.
+Type <strong>man perlop</strong> at the prompt.
+
+<p>
+<hr>
+<h2><a name="interpolation"> Interpolation</a></h2>
+
+The following code prints <em>apples and pears</em> using concatenation:
+<pre>
+$a = 'apples';
+$b = 'pears';
+print $a.' and '.$b;
+</pre>
+It would be nicer to include only one string in the final print statement,
+but the line
+<pre>
+print '$a and $b';
+</pre>
+prints literally <em>$a and $b</em> which isn't very helpful. Instead we
+can use the double quotes in place of the single quotes:
+<pre>
+print "$a and $b";
+</pre>
+The double quotes force <em>interpolation</em> of any codes, including
+interpreting variables. This is a much nicer than our original statement.
+Other codes that are interpolated include special characters such as
+newline and tab. The code <strong>\n</strong> is a newline and
+<strong>\t</strong> is a tab.
+
+
+<p>
+<hr>
+<h2><a name="exercise"> Exercise</a></h2>
+
+This exercise is to rewrite the Hello world program so that
+(a) the string is assigned to a variable and (b) this variable is
+then printed with a newline character. Use the double quotes and
+don't use the concatenation operator. Make sure you can get
+this to work before proceeding.
+
+<p>
+</body>
+
+<hr>
+<a href="running.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_camel.gif" width=48 height=48 alt="Start"></a>
+<a href="arrays.html"><img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_perl_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>

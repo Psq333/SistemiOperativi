@@ -1,0 +1,152 @@
+<html>
+<head>
+	<title> CGI Tutorial: Text areas and the POST method</title>
+	<link rev="made" href="mailto:nik@comp.leeds.ac.uk">
+</head>
+
+<body>
+
+<hr>
+<h1>
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif"
+     width=48 height=48 alt="">
+Text areas and the POST method</h1>
+<hr>
+
+<p>
+
+As well as allowing single-line text boxes, forms also allow multiline
+text areas. A text area does not use the input tag; it is a
+pair &lt;textarea&gt; ... &lt;/textarea&gt; in its own right, with
+the default contents going between the two tags.
+A text area must still have a name, but we can also
+specify how many rows and columns it has.
+
+<p>
+
+Here is the HTML code for a 40 by 4 text box with some initial default text.
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET"&gt;
+&lt;textarea name="review" cols=40 rows=4&gt;I urge you to see it.
+&lt;/textarea&gt;
+&lt;input type="submit" value="Publish"&gt;
+&lt;/form&gt;
+</pre>
+
+This looks like
+
+<p>
+
+<form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="GET">
+<textarea name="review" cols=40 rows=4>I urge you to see it.
+</textarea>
+<input type="submit" value="Publish">
+</form>
+
+<p>
+
+When the submit button is clicked the contents of the entire text box is
+packaged up and sent as the query string. It is at this point that things
+can start to go wrong. The information to the query string is sent as part
+of the URL, but the URL can often only be so many characters long (about
+two hundred) before the HTTP server chokes on information overload. This
+isn't very likely with the examples we've seen before now, but text areas
+can contain potentially unlimited amounts of text and so it starts to be a
+danger. The solution is to use another method to send the data.
+
+
+<p>
+<hr>
+<h2><a name="post"> The POST method</a></h2>
+
+Until now we've been using the GET method to send information to the
+HTTP server. The GET method is the method of packaging the information
+into the URL and then passing it to the CGI script as the
+QUERY_STRING environment variable. A generally more reliable method
+is the POST method. This packages the information in exactly the
+same way, but instead of sending it as a text string after a ? in the
+URL it sends it as a separate message. This message comes into
+the CGI script in the form of the standard input.
+
+<p>
+
+Once again these details needn't bother us, though, because the
+<a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/read-input">
+&amp;read_input</a> subroutine is designed to cope with this.
+All we need to worry about is setting the form's method to POST, and
+then everything else stays the same.
+The resultant HTML code should look like this
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="POST"&gt;
+&lt;textarea name="review" cols=40 rows=4&gt;I urge you to see it.
+&lt;/textarea&gt;
+&lt;input type="submit" value="Publish"&gt;
+&lt;/form&gt;
+</pre>
+Notice that only the method has changed from GET to POST.
+Everything else remains the same.
+Now when
+the URL is accessed the query string should be empty because the
+information is no longer sent that way. Try it:
+
+<p>
+
+<form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/environment-example"
+      method="POST">
+<textarea name="review" cols=40 rows=4>I urge you to see it.
+</textarea>
+<input type="submit" value="Publish">
+</form>
+
+<p>
+
+The way to access the information is to write a CGI script which
+uses the &amp;read_input subroutine. The script in
+<a href="http://www.comp.leeds.ac.uk/cgi-bin/Perl/displaytext/cgi-bin/ta-example">
+~webm/WWW/Perl/Source/ta-example</a> is one such. Here is the HTML code for
+the form which accesses it, followed by the form itself.
+<pre>
+&lt;form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/ta-example"
+      method="POST"&gt;
+&lt;textarea name="review" cols=40 rows=4&gt;I urge you to see it.
+&lt;/textarea&gt;
+&lt;input type="submit" value="Publish"&gt;
+&lt;/form&gt;
+</pre>
+
+<p>
+
+<form action="http://www.comp.leeds.ac.uk/cgi-bin/Perl/ta-example"
+      method="POST">
+<textarea name="review" cols=40 rows=4>I urge you to see it.
+</textarea>
+<input type="submit" value="Publish">
+</form>
+
+<p>
+
+It's interesting to note that since this text is fed straight into
+the HTML document being generated it's actually interpreted as HTML.
+For a graphic illustration of this
+try pasting the above HTML code into the text area and submitting
+that.
+
+
+
+
+<p>
+</body>
+
+<hr>
+<a href="forms.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_left.gif" width=48 height=48 alt="Previous"></a>
+<a href="start.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_tickbox.gif" width=48 height=48 alt="Start"></a>
+<a href="appendix_sources.html">
+<img src="http://www.comp.leeds.ac.uk/Perl/Images/icon_cgi_right.gif" width=48 height=48 alt="Next"></a>
+
+<hr>
+</html>

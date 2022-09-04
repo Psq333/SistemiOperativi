@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>Perl Tutorial: Array associativi </TITLE>
+ <LINK HREF="perl-tutorial-9.html" REL=previous>
+ <LINK HREF="perl-tutorial.html#toc10" REL=contents>
+ <LINK HREF="perl-tutorial-11.html" REL=next>
+</HEAD>
+
+<body
+bgcolor="#000000"
+text="#ffefd7"
+link="#ffe100"
+vlink="#858585" 
+alink="#cc0000"
+background="quadretti.png"
+>
+<table cellspacing="16" border="0" width="96%">
+<tr><td><img src="_.gif" width="40" height="1"></td><td>
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-9.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc10"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-11.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><H2><A NAME="s10">10. Array associativi </A></H2>
+
+<P>
+<P>Le normali liste array permettono di accedere ai loro elementi specificando
+un numero. Infatti il primo elemento dell'array <CODE>@cibo</CODE> è <CODE>$cibo[0]</CODE>, il 
+secondo è <CODE>$cibo[1]</CODE> e così via. Il Perl daltronde permette anche di creare
+array i cui elementi sono accessibili specificando delle stringhe.
+Strutture dati di questo tipo sono dette array associativi.
+<P>Per definire un array associativo si usa la solita notazione con le
+parentesi, ma in questo caso il nome dell'array viene preceduto dal
+simbolo <CODE>%</CODE>. Supponiamo di voler creare un array contenente i nomi
+di diverse persone e le loro età. Un modo possibile è il seguente:
+<P>
+<PRE>
+   %info_persone = ("Michele Perlato", 39,
+   "Marco Rossi", 34,
+   "Rodolfo", "3 anni da pesce",
+   "Guglielmo De Filippis", 21,
+   "Artemide Dal Canto", 108);
+</PRE>
+<P>Ora possiamo trovare l'età delle persone (e del pesce) in questo modo:
+<P>
+<PRE>
+   $info_persone{"Michele Perlato"};         
+   # ritorna 39
+   $info_persone{"Marco Rossi"};
+   # ritorna 34
+   $info_persone{"Guglielmo De Filippis"};
+   # ritorna 21
+   $info_persone{"Artemide Dal Canto"};
+   # ritorna 108
+   $info_persone{"Rodolfo"};     
+   # ritorna "3 anni da pesce",
+</PRE>
+<P>Notare che come nel caso delle liste array il segno <CODE>%</CODE> è stato cambiato
+nel segno <CODE>$</CODE> per accedere ad un singolo elemento, perchè un singolo elemento
+è uno scalare. Al contrario delle liste array l'indice identificativo
+(in questo caso il nome della persona) è racchiuso tra parentesi graffe,
+dal momento che gli array associativi sono più fantasiosi rispetto a quelli
+classici.
+<P>Se si assegna l'array associativo <CODE>%info_persone</CODE> alla lista array 
+<CODE>&amp;info</CODE>, si ottiene una lista array contenente 10 elementi. Gli elementi 
+di indice pari sono costituiti dai nomi, quelli di indice dispari dalle età;
+l'abbinamento originario tra nomi ed età viene mantenuto.
+Viceversa è possibile in modo semplice convertire una lista array
+in un array associativo. I seguenti esempi chiariranno quanto detto:
+<P>
+<PRE>
+   @info = %info_persone;
+   # @info è una lista array
+   # contenente 10 elementi
+   $info[2];
+   # ritorna "Marco Rossi"
+   $info[3];
+   # ritorna 34
+   %info_persone2 = @info
+   # %info_persone2 è ora un array
+   # associativo uguale a %info_persone
+</PRE>
+<P>
+<H2><A NAME="ss10.1">10.1 Operatori </A>
+</H2>
+
+<P>
+<P>Non è possibile attribuire un certo ordinamento agli elementi di un array 
+associativo, come è invece possibile fare con gli elementi di un array classico.
+Risulta comunque semplice accedere a tutti gli elementi uno per volta usando
+le funzioni key e values:
+<P>
+<PRE>
+   foreach $persona (keys %info_persone)
+   {
+      print "Conosco l'età di $persona\n";
+   }
+   foreach $anni (values %info_persone)
+   {
+      print "Qualcuno ha $anni anni\n";
+   }
+</PRE>
+<P>La funzione <CODE>keys</CODE> ritorna una lista di tutte le chiavi (indici simbolici)
+dell'array associativo. Invece <CODE>values</CODE> restituisce la lista di tutti i
+valori memorizzati nell'array associativo specificato. Queste due funzioni
+ritornano le loro liste nello stesso ordine, ma questo ordine non ha niente
+a che vedere con lo'ordine in cui gli elementi sono stati inseriti.
+<P>Quando <CODE>keys</CODE> e <CODE>values</CODE> sono chiamate in un contesto scalare esse ritornano
+il numero di coppie chiave/valore contenute nell'array associativo.
+<P>Un'altra funzione interessante è <CODE>each</CODE>. Essa restituisce ogni volta che
+viene chiamata una coppia diversa di elementi; il primo elemento è una 
+chiave, il secondo è il valore relativo.
+<P>
+<PRE>
+   while (($persona, $anni) = each(%info_persone))
+   {
+           print "$persona ha $anni anni\n";
+   }
+</PRE>
+<P>
+<H2><A NAME="ss10.2">10.2 Variabili d'ambiente </A>
+</H2>
+
+<P>
+<P>Quando si esegue un programma Perl o qualsiasi altro script UNIX, sarà spesso
+utile conoscere il valore a cui sono state impostate tutta una serie di
+variabili d'ambiente. Ad esempio la variabile <CODE>USER</CODE> contiene il nome di
+login dell'utente che sta eseguendo lo script, la variabile <CODE>DISPLAY</CODE> indica
+su quale schermo andrà a finire l'output grafico del programma. Quando poi
+si esegue uno script CGI perl attraverso Internet, ci sono svariate altre
+variabili d'ambiente che contengono informazioni utili. Tutte queste variabili
+e i loro rispettivi valori sono memorizzati nell'array associativo <CODE>%ENV</CODE>;
+il nome delle variabili è ovviamente la chiave per accedere al valore
+associato. Ecco un semplice esempio di utilizzo:
+<P>
+<PRE>
+   print "Ti chiami $ENV{'USER'} e stai usando ";
+   print "il display $ENV{'DISPLAY'}\n";
+</PRE>
+<P>
+<P>
+<P>
+
+<br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br><A HREF="perl-tutorial-9.html"><IMG SRC="prev.gif" ALT="Previous"></A>
+<A HREF="perl-tutorial.html#toc10"><IMG SRC="toc.gif" ALT="Contents"></A>
+<A HREF="perl-tutorial-11.html"><IMG SRC="next.gif" ALT="Next"></A>
+
+<br><br><table border="0" cellpadding="0" cellspacing="0" width="100%" height="1">
+<tr><td bgcolor="#ffefd7"><img src="black.gif" width="1" height="1"></td></tr>
+</table><br>
+</td></tr></table>
+</BODY></HTML>
