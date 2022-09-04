@@ -1,0 +1,8 @@
+girone E : ola dan gia cam
+
+ola-dan=1-0
+ola-gia=2-2
+ola-cam=2-1
+dan-gia=2-2
+dan-cam=1-0
+gia-cam=1-0

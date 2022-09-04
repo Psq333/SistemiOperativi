@@ -1,0 +1,8 @@
+girone D : ger gha ser aus
+
+ger-gha=1-2
+ger-ser=2-1
+ger-aus=1-2
+gha-ser=2-0
+gha-aus=1-1
+ser-aus=2-3

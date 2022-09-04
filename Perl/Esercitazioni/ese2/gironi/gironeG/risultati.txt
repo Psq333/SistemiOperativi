@@ -1,0 +1,8 @@
+girone G : bra con coa por
+
+bra-con=1-0
+bra-coa=2-1
+bra-por=1-1
+con-coa=1-2
+con-por=2-1
+coa-por=1-1
