@@ -8,11 +8,13 @@ $string_S = shift || die "Inserire String";
 
 print "Non intero" if($int_D !~ /\d/);
 
+
 %hash;
-chdir @path;
+chdir $path;
 @output = qx{tree -s};
 print(@output);
 $cont = 0;
+
 for(@output){
     if(/\s*(\d+)]\s*(.*$string_S.*)/){
         if($1 >= $int_D*1000000){
