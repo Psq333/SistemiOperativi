@@ -11,6 +11,14 @@ Proprio come le code bloccanti standard, una PivotBlockingQueue può contenere a
 dove N è specificato in fase di creazione della struttura dati. Le regole per determinare l’elemento PIVOT
 vengono scelte secondo un particolare criterio che è possibile impostare con un metodo apposito.
 '''
+
+plock = RLock()
+def prints(s):
+    plock.acquire()
+    print(s)
+    print("\n")
+    plock.release()
+
 class PivotBlockingQueue:
     def __init__(self,dim):
         self.dim = dim
@@ -18,6 +26,10 @@ class PivotBlockingQueue:
         self.criterio = True
         self.lock = RLock()
         self.condNewElement = Condition(self.lock)
+
+        self.condSum = Condition(self.lock) #ADD3
+        self.pivotNumber = 1 #ADD1
+
 
     '''
     take(self) -> int: 
@@ -28,10 +40,11 @@ class PivotBlockingQueue:
 
     def take(self) -> int:
         with self.lock:
-            while len(self.buffer) < 2:
+            while len(self.buffer) < 2 and len(self.buffer) < self.pivotNumber+1: #ADD1
                 self.condNewElement.wait()
-                
-            self.__removePivot__()
+            
+            for i in range(self.pivotNumber): #ADD1
+                self.__removePivot__()
             return self.buffer.pop(0)
 
     '''
@@ -46,9 +59,14 @@ class PivotBlockingQueue:
         with self.lock:
             if len(self.buffer) == self.dim:
                 self.__removePivot__()
-            self.buffer.append(v)
+
+            for i in range(self.pivotNumber): #ADD1
+                self.buffer.append(v)
+    
             if len(self.buffer) == 2:
                 self.condNewElement.notify()
+            
+            self.condSum.notifyAll #ADD2
 
     '''
     setCriterioPivot(minMax : boolean)
@@ -90,9 +108,49 @@ class PivotBlockingQueue:
         self.buffer.remove(pivot) if not pivotMultipli else self.buffer.pop()
 
 
+    def print(self):
+        with self.lock:
+            prints(self.getStringa())
 
-    #ADD : punto 1
-    def set
+    def getStringa(self):
+        stringa = ""
+        for i in self.buffer:
+            stringa += str(i) + " "
+        return stringa
+
+    #ADD : punto 1 (ADD1)
+    def setPivotNumber(self, n : int):
+        with self.lock:
+            if n < 1 or n > self.dim -1:
+                prints("Numero non compreso tra 1 e dim-1")
+            else:
+                self.pivotNumber = n
+
+    #ADD : punto 2 (ADD2)
+    def doubleTake(self):
+        with self.lock:
+            while len(self.buffer) < 2 + self.pivotNumber:
+                self.condNewElement.wait()
+            
+            for i in range(self.pivotNumber): #ADD1
+                self.__removePivot__()
+            x = self.buffer.pop(0)
+            y = self.buffer.pop(0)
+            return x, y
+    
+    #ADD : punto 3 (ADD3)
+    def waitFor(self, n : int) -> None:
+        while (self.sum() <= n):
+            self.condSum.wait()
+            
+            
+
+    def sum(self):
+        sum = 0
+        for i in self.buffer:
+            sum += i
+        return sum
+
 
 '''
     Thread di test
@@ -104,17 +162,32 @@ class Operator(Thread):
         self.coda = c
         
     def run(self):
-        for i in range(1000):
-             sleep(random())
-             coda.put(randint(-100,100))
-             coda.put(randint(-100,100))
-             sleep(random())
-             print (f"Il thread TID={get_ident()} ha estratto il valore {coda.take()}" )
+        #for i in range(1000):
+        sleep(random())
+        coda.put(randint(-100,100))
+        coda.put(randint(-100,100))
+        sleep(random())
+        prints (f"Il thread TID={get_ident()} ha estratto il valore {coda.take()}" )
+
+
+class Display(Thread):
+    def __init__(self, coda : PivotBlockingQueue):
+        super().__init__()
+        self.coda = coda
+
+    def run(self):
+        while(1):
+            self.coda.print()
+
+            sleep(0.15)
 
 
 if __name__ == '__main__':
             
-    coda = PivotBlockingQueue(10)        
+    coda = PivotBlockingQueue(10)  
+    coda.setPivotNumber(2)    
+    d = Display(coda)
+    d.start()  
     operatori = [Operator(coda) for i in range(50)] 
     for o in operatori:
         o.start()     

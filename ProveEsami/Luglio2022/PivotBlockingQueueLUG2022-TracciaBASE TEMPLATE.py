@@ -19,6 +19,8 @@ class PivotBlockingQueue:
         self.lock = RLock()
         self.condNewElement = Condition(self.lock)
 
+        
+
     '''
     take(self) -> int: 
 
