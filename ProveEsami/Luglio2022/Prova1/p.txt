@@ -1,0 +1,86 @@
+Uso: man [OPZIONE...] [SEZIONE] PAGINA...
+
+  -C, --config-file=FILE     usa il file di configurazione di questo utente
+  -d, --debug                emette messaggi di debug
+  -D, --default              ripristina le opzioni ai valori predefiniti
+      --warnings[=AVVISI]    abilita gli avvisi da groff
+
+ Principali modalità di operazione:
+  -f, --whatis               equivalente a whatis
+  -k, --apropos              equivalente ad apropos
+  -K, --global-apropos       cerca testo in tutte le pagine
+  -l, --local-file           interpreta gli argomenti PAGINA come nomi di file
+                             locali
+  -w, --where, --path, --location
+                             stampa la posizione fisica delle pagine man
+  -W, --where-cat, --location-cat
+                             stampa la posizione fisica dei file cat
+
+  -c, --catman               usato da catman per formattare le pagine cat
+                             datate
+  -R, --recode=CODIFICA      pagina sorgente di output codificata in ENCODING
+
+ Trova le pagine di manuale:
+  -L, --locale=LOCALE        definisce la lingua per questa particolare ricerca
+                             man
+  -m, --systems=SISTEMA      usa pagine di manuale da altri sistemi
+  -M, --manpath=PERCORSO     imposta il percorso di ricerca per le pagine a
+                             PERCORSO
+
+  -S, -s, --sections=ELENCO  utilizzare l'elenco delle sezioni separate da due
+                             punti
+
+  -e, --extension=ESTENSIONE limita la ricerca al tipo di estensione ESTENSIONE
+                            
+
+  -i, --ignore-case          cerca le pagine senza differenziare
+                             maiuscole-minuscole (predefinito)
+  -I, --match-case           cerca le pagine differenziando maiuscole-minuscole
+                            
+
+      --regex                mostra tutte le pagine che combaciano con
+                             l'espressione regolare
+      --wildcard             mostra tutte le pagine che combaciano con i
+                             caratteri speciali
+
+      --names-only           make --regex e --wildcard abbinano solo i nomi
+                             delle pagine, non le descrizioni
+
+  -a, --all                  trova tutte le pagine di manuale che combaciano
+  -u, --update               forza un controllo di consistenza della cache
+
+      --no-subpages          non provare le sottopagine, ad es. 'man foo bar'
+                             => 'man foo-bar'
+
+ Controllo dell'output formattato:
+  -P, --pager=PAGINATORE     usa il programma PAGINATORE per visualizzare
+                             l'output
+  -r, --prompt=STRINGA       fornisce il paginatore "less" con un prompt
+
+  -7, --ascii                mostra la traduzione ASCII di alcuni caratteri
+                             latin1
+  -E, --encoding=CODIFICA    usa la seguente codifica in uscita
+      --no-hyphenation, --nh disattivare la sillabazione
+      --no-justification, --nj   disabilita l'allineamento
+  -p, --preprocessor=STRINGA STRINGA indica quale pre-processore utilizzare:
+                             e - [n]eqn, p - pic, t - tbl,
+                             g - grap, r - refer, v - vgrind
+
+  -t, --troff                usa groff per formattare le pagine
+  -T, --troff-device[=DEVICE]   usa groff con il dispositivo selezionato
+
+  -H, --html[=BROWSER]       usa www-browser o un borwser per mostrare il
+                             contenuto html
+  -X, --gxditview[=RISOLUZIONE]   usa groff e visualizza attraverso gxditview
+                             (X11):
+                             -X = -TX75, -X100 = -TX100, -X100-12 = -TX100-12
+  -Z, --ditroff              usa groff e forza la creazione di ditroff
+
+  -?, --help                 Mostra questo aiuto
+      --usage                Mostra un breve messaggio sull'uso
+  -V, --version              Stampa la versione del programma
+
+Gli argomenti obbligatori o facoltativi per le opzioni estese lo sono anche per
+le corrispondenti opzioni brevi.
+
+Segnalare i bug a cjwatson@debian.org.

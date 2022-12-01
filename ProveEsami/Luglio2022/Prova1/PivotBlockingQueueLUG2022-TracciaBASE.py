@@ -40,7 +40,7 @@ class PivotBlockingQueue:
 
     def take(self) -> int:
         with self.lock:
-            while len(self.buffer) < 2 and len(self.buffer) < self.pivotNumber+1: #ADD1
+            while len(self.buffer) < self.pivotNumber+1: #ADD1
                 self.condNewElement.wait()
             
             for i in range(self.pivotNumber): #ADD1
@@ -66,7 +66,7 @@ class PivotBlockingQueue:
             if len(self.buffer) == 2:
                 self.condNewElement.notify()
             
-            self.condSum.notifyAll #ADD2
+            self.condSum.notifyAll() #ADD3
 
     '''
     setCriterioPivot(minMax : boolean)
