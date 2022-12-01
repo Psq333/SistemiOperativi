@@ -4,7 +4,6 @@ from threading import Thread, Lock, RLock, Condition
 debug = True
 
 # Stampa sincronizzata
-#
 plock = Lock()
 
 
@@ -52,7 +51,7 @@ class DischiConcentrici():
             return (i + self.shiftAttuale) % self.size
 
     #
-    # Esempio, con len(In) = len(Out) = :
+    # Esempio, con len(In) = len(Out) = 10:
     #   shiftAttuale = 0, dunque _om(i) = i
     #
     #  Corrispondenza tra In e Out:
@@ -60,7 +59,7 @@ class DischiConcentrici():
     #   In: 0 1 2 3 4 5 6 7 8 9
     #  Out: 0 1 2 3 4 5 6 7 8 9
     #
-    #  Dopo aver invocato shift(2) ==> shiftAttuale = 2, _om(i) = (i+2) %
+    #  Dopo aver invocato shift(2) ==> shiftAttuale = 2, _om(i) = (i+2) % 10
     #
     #  Corrispondenza tra In e Out:
     #
