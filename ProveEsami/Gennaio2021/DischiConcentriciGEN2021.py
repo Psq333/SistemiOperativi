@@ -29,7 +29,7 @@ class DischiConcentrici():
         #
         self.lock = RLock()
         self.waitCondition = Condition(self.lock)
-        self.oldgetCondition = Condition(self.lock) #ADD TURNO1 (ADD1)
+        self.wsetCondition = Condition(self.lock)
         #
         # Tiene traccia della corrispondenza In e Out
         #
@@ -84,6 +84,7 @@ class DischiConcentrici():
                     self.Out[self._om(i)] = 0
                 elif v != 0:
                     self.waitCondition.notifyAll()
+            self.wsetCondition.notifyAll()
 
     def get(self, i: int, d: int):
         with self.lock:
@@ -96,22 +97,36 @@ class DischiConcentrici():
             elif d == 1:
                 return self.In[i]
 
-
+    #TURNO1
     def oldget(self, i: int, d: int):
         with self.lock:
             val = self.shiftAttuale
-            while (d == 0 and self.Out[self._om(i)] == 0) or (d == 1 and self.In[i] == 0):
+            while ((d == 0 and self.Out[self._om(i)] == 0) or (d == 1 and self.In[i] == 0) or 
+                (val % self.size != self.shiftAttuale % self.size)): 
+                #si mette il wait su un unico while perchè se aspettiamo un'altro thread potrebbe cambiare il valore
+                #% self.size non riesco a capirlo, perchè dovrebbe già rientrare tra le dim dell'array
                 dprint("In attesa")
                 self.waitCondition.wait()
                 dprint("Risvegliato")
-            while(val != self.shiftAttuale):
-                dprint("In attesa oldget()")
-                self.oldgetCondition.wait()
-                dprint("Risvegliato oldget()")
             if d == 0:
                 return self.Out[self._om(i)]
             elif d == 1:
                 return self.In[i]
+
+    #TURNO2
+    #NB: INSERISCIIIIIIIIIIII SUBITO LA WAIT NELLE FUNZIONI
+    def wset(self, i: int, v: int, d: int):
+        with self.lock:
+            while ( ( d == 0 and self.In[i] == v ) or 
+                    ( d == 1 and self.Out[self._om(i)] == v )):
+                    self.waitCondition.wait()
+            if d == 0:
+                self.Out[self._om(i)] = v
+            else:
+                self.In[i] = v
+                        
+            self.waitCondition.notifyAll()
+
 
 class ManipolatoreDischi(Thread):
     def __init__(self, d: DischiConcentrici):
