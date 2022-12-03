@@ -1,28 +1,22 @@
-from threading import RLock,Condition, Thread
+from threading import RLock,Condition, Thread, Barrier
 import random
 import time
-
-class stampa_lock:
-    plock = RLock()
-    def prints(self, stringaa : str):
-        with self.plock:
-            print(stringaa)
 
 class BlockingStack:
     
     def __init__(self,size):
         self.size = size
-        self.elementi = [1,2,3,4,5,6,7]
+        self.elementi = []
         self.lock = RLock()
+        self.wait = 0
         self.conditionTuttoPieno = Condition(self.lock)
         self.conditionTuttoVuoto = Condition(self.lock)
-        self.condition = Condition(self.lock)
         
     def __find(self,t):
         try:
             if self.elementi.index(t) >= 0:
                 return True
-        except(ValueError): 
+        except(ValueError): #Se l'elemento t non è in self.element esce un errore. L'errore viene gestito dall'except
             return False
     
     def put(self,t):
@@ -54,59 +48,54 @@ class BlockingStack:
                 return t    
         finally:
             self.lock.release()
-        
-    def print(self) -> str:
-        return str(self.elementi)
-
-
     
     
 
 class Consumer(Thread): 
     
-    def __init__(self,buffer,stampa_lock):
-        self.queue = buffer
-        Thread.__init__(self)
-        self.stampa_lock = stampa_lock
-
-    def run(self):
-        while True:
-            time.sleep(random.random()*2)
-            self.stampa_lock.prints("Estratto elemento " + str(self.queue.take()))
-            
-
-
-class Producer(Thread):
+    b = Barrier(3)
+    soglia = 10
 
     def __init__(self,buffer):
         self.queue = buffer
         Thread.__init__(self)
-
-    def run(self): 
-        while True:
-            time.sleep(random.random() * 2)
-            self.queue.put(self.name)
-            
-
-
-class Display(Thread):
-
-    def __init__(self, buffer : BlockingStack,stampa_lock):
-        self.buffer = buffer
-        Thread.__init__(self)
-        self.stampa_lock = stampa_lock
+        self.cont = 0
 
     def run(self):
         while True:
-            time.sleep(1)
-            self.stampa_lock.prints(self.buffer.print())
+            if(self.cont == self.soglia):
+                self.b.wait()
+                self.cont = 0
+            self.cont+=1
+            time.sleep(random.random()*2)
+            print(f"Estratto elemento {self.queue.take()}")
 
+
+class Producer(Thread):
+
+    b = Barrier(5)
+    soglia = 10
+
+    def __init__(self,buffer):
+        self.queue = buffer
+        Thread.__init__(self)
+        self.cont = 0
+
+    def run(self): 
+        while True:
+            if(self.cont == self.soglia):
+                self.b.wait()
+                self.cont = 0
+            self.cont+=1
+            time.sleep(random.random() * 2)
+            self.queue.put(self.name)
+            
 #  Main
 #
 buffer = BlockingStack(10)
-s = stampa_lock()
+
 producers = [Producer(buffer) for x in range(5)]
-consumers = [Consumer(buffer,s) for x in range(3)]
+consumers = [Consumer(buffer) for x in range(3)]
 
 for p in producers:
     p.start()
@@ -114,5 +103,3 @@ for p in producers:
 for c in consumers:
     c.start()
     
-display = Display(buffer, s)
-display.start()
