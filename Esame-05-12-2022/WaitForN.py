@@ -54,12 +54,12 @@ class BlockingStack:
         with self.lock:
             sum = 0
             for i in self.elementi:
-                sum += i
+                sum += int(i[7])
             return sum
 
     def waitForN(self, min):
         with self.lock:
-            while self.__sum__ < min:
+            while self.__sum__() < min:
                 self.condition.wait()
             
             print(f"Somma {min} raggiunta")
@@ -76,7 +76,7 @@ class Consumer(Thread):
         while True:
             time.sleep(random.random()*2)
             print(f"Estratto elemento {self.queue.take()}")
-            
+            self.queue.waitForN(15)
 
 
 class Producer(Thread):
@@ -89,7 +89,8 @@ class Producer(Thread):
         while True:
             time.sleep(random.random() * 2)
             self.queue.put(self.name)
-            
+
+#         
 #  Main
 #
 buffer = BlockingStack(10)
