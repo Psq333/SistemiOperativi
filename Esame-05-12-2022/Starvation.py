@@ -1,5 +1,5 @@
 from threading import RLock,Condition, Thread, Barrier
-import random
+from random import random, randint
 import time
 
 class BlockingStack:
@@ -49,6 +49,14 @@ class BlockingStack:
         finally:
             self.lock.release()
     
+    def sposta(self, x_pos, y_pos):
+        with self.lock:
+            temp = self.elementi[x_pos]
+            self.elementi[x_pos] = self.elementi[y_pos]
+            self.elementi[y_pos] = temp
+
+
+    
     
 
 class Consumer(Thread): 
@@ -64,7 +72,9 @@ class Consumer(Thread):
     def run(self):
         while True:
             if(self.cont == self.soglia):
+                print("Wait: ", {self.name})
                 self.b.wait()
+                print("Fuori dalla Barriere. Urrà - Consumer ", {self.name})
                 self.cont = 0
             self.cont+=1
             time.sleep(random.random()*2)
@@ -84,12 +94,28 @@ class Producer(Thread):
     def run(self): 
         while True:
             if(self.cont == self.soglia):
+                print("Wait: ", {self.name})
                 self.b.wait()
                 self.cont = 0
+                print("Fuori dalla Barriere. Urrà - Producer ", {self.name})
             self.cont+=1
             time.sleep(random.random() * 2)
             self.queue.put(self.name)
-            
+
+
+class Spostatore:
+    def __init__(self,buffer : BlockingStack):
+        self.queue = buffer
+        Thread.__init__(self)
+    
+    def run(self):
+        while True:
+            x_pos = randint(0,self.queue.size)
+            y_pos = randint(0,self.queue.size)
+            self.queue.sposta(x_pos,y_pos)
+
+
+
 #  Main
 #
 buffer = BlockingStack(10)
