@@ -6,7 +6,7 @@ $path = shift || die "Inserire Path";
 $int_D = shift || die "Inserire Int";
 $string_S = shift || die "Inserire String";
 
-print "Non intero" if($int_D !~ /\d/);
+die "Non intero" if($int_D !~ /\d/);
 
 
 %hash;
@@ -24,7 +24,9 @@ for(@output){
     } 
 }
 
-open($fh, >, "results.out");
+open($fh, ">", "results.out");
+
+%hash = sort{($hash{$b} <=> $hash{$a} || ($a cmp $b))} keys %hash;
 
 for $keys (keys %hash){
     for $value ($hash{$keys}){
@@ -32,6 +34,6 @@ for $keys (keys %hash){
     }
 }
 
-print "Spazio totale occupato: $cont" 
+print "Spazio totale occupato: $cont" ;
 
 close($fh);
