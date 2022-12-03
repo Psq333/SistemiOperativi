@@ -2,20 +2,26 @@ from threading import RLock,Condition, Thread
 import random
 import time
 
+plock = RLock()
+def prints(self, s):
+    with plock:
+        print(s)
+
 class BlockingStack:
     
     def __init__(self,size):
         self.size = size
-        self.elementi = []
+        self.elementi = [1,2,3,4,5,6,7]
         self.lock = RLock()
         self.conditionTuttoPieno = Condition(self.lock)
         self.conditionTuttoVuoto = Condition(self.lock)
+        self.condition = Condition(self.lock)
         
     def __find(self,t):
         try:
             if self.elementi.index(t) >= 0:
                 return True
-        except(ValueError): #Se l'elemento t non è in self.element esce un errore. L'errore viene gestito dall'except
+        except(ValueError): 
             return False
     
     def put(self,t):
@@ -47,6 +53,15 @@ class BlockingStack:
                 return t    
         finally:
             self.lock.release()
+        
+    def print(self):
+        with self.lock:
+            stringa = ""
+            for i in self.elementi:
+                stringa = i + " ";
+            return stringa
+
+
     
     
 
@@ -59,7 +74,8 @@ class Consumer(Thread):
     def run(self):
         while True:
             time.sleep(random.random()*2)
-            print(f"Estratto elemento {self.queue.take()}")
+            x, y = self.queue.doubleTakePop()
+            prints(f"Estratto elemento {x,y}")
             
 
 
@@ -74,6 +90,19 @@ class Producer(Thread):
             time.sleep(random.random() * 2)
             self.queue.put(self.name)
             
+
+
+class Display(Thread):
+
+    def __init__(self, buffer):
+        self.buffer = buffer
+        Thread.__init__(self)
+
+    def run(self):
+        while True:
+            time.sleep(0.5)
+            prints(self.buffer.print())
+
 #  Main
 #
 buffer = BlockingStack(10)

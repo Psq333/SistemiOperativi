@@ -10,6 +10,7 @@ class BlockingStack:
         self.lock = RLock()
         self.conditionTuttoPieno = Condition(self.lock)
         self.conditionTuttoVuoto = Condition(self.lock)
+        self.condition = Condition(self.lock)
         
     def __find(self,t):
         try:
@@ -23,6 +24,7 @@ class BlockingStack:
         while len(self.elementi) == self.size:
             self.conditionTuttoPieno.wait()
         self.conditionTuttoVuoto.notify_all()
+        self.condition.notifyAll()
         self.elementi.append(t)
         self.lock.release()
     
@@ -47,6 +49,20 @@ class BlockingStack:
                 return t    
         finally:
             self.lock.release()
+
+    def __sum__(self):
+        with self.lock:
+            sum = 0
+            for i in self.elementi:
+                sum += i
+            return sum
+
+    def waitForN(self, min):
+        with self.lock:
+            while self.__sum__ < min:
+                self.condition.wait()
+            
+            print(f"Somma {min} raggiunta")
     
     
 

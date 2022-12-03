@@ -6,16 +6,17 @@ class BlockingStack:
     
     def __init__(self,size):
         self.size = size
-        self.elementi = []
+        self.elementi = [1,2,3,4,5,6,7]
         self.lock = RLock()
         self.conditionTuttoPieno = Condition(self.lock)
         self.conditionTuttoVuoto = Condition(self.lock)
+        self.condition = Condition(self.lock)
         
     def __find(self,t):
         try:
             if self.elementi.index(t) >= 0:
                 return True
-        except(ValueError): #Se l'elemento t non è in self.element esce un errore. L'errore viene gestito dall'except
+        except(ValueError): 
             return False
     
     def put(self,t):
@@ -23,6 +24,7 @@ class BlockingStack:
         while len(self.elementi) == self.size:
             self.conditionTuttoPieno.wait()
         self.conditionTuttoVuoto.notify_all()
+        self.condition.notifyAll()
         self.elementi.append(t)
         self.lock.release()
     
@@ -47,6 +49,34 @@ class BlockingStack:
                 return t    
         finally:
             self.lock.release()
+
+
+    #DTP1
+    def doubleTakePop(self):
+        with self.lock:
+            while len(self.elementi) < 2:
+                self.condition.wait()
+            
+            x = self.take()
+            y = self.take()
+
+            return y, x
+
+    #DTF
+    def doubleTakeFind(self,x ,y = None):
+        with self.lock:
+            if y == None:
+                while self.elementi.count(x) < 2:
+                    self.condition.wait()
+                
+                return (self.take(x), self.take(x))
+            else:
+                while not self.__find(x) and not self.__find(y):
+                    self.condition.wait()
+                
+                return (self.take(x), self.take(y))
+
+
     
     
 
@@ -59,7 +89,8 @@ class Consumer(Thread):
     def run(self):
         while True:
             time.sleep(random.random()*2)
-            print(f"Estratto elemento {self.queue.take()}")
+            x, y = self.queue.doubleTakePop()
+            print(f"Estratto elemento {x,y}")
             
 
 
