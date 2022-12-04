@@ -5,6 +5,7 @@ from queue import Queue
 #
 # Una sede sarà formata da tanti Uffici
 #
+
 class Ufficio:
     def __init__(self,l):
         Thread.__init__(self)
@@ -70,6 +71,7 @@ class Sede:
         self.lock = RLock()
         self.condition = Condition(self.lock)
         self.ultimiTicket = []
+        self.lenUltimiTicket = 10
         self.update = False
         self.setPrintAttese = False
 
@@ -92,6 +94,9 @@ class Sede:
             self.update = True
             if(len(self.ultimiTicket) >= 5):
                 self.ultimiTicket.pop()
+            
+            if self.lenUltimiTicket == len(self.ultimiTicket):
+                self.ultimiTicket.pop(0)
             self.ultimiTicket.insert(0,ticket)
             
 
@@ -126,6 +131,61 @@ class Sede:
             for t in self.ultimiTicket:
                 print(t)
             print ("="*10)
+
+    
+    def listIsInUltimi(self, L : list):
+        with self.lock:
+            for i in L:
+                if i in self.ultimiTicket:
+                    return True
+            return False
+        
+    def controlloSalto(self, L:list):
+        for i in self.ultimiTicket:
+            for j in L:
+                if(i[0] == j[0]):
+                    if(j < i and j not in self.ultimiTicket):
+                        return True
+        return False
+
+    def waitForTickets(self, L : list):
+        with self.lock:
+            b = False
+            for i in L:
+                if(self.waitForTicketSafe(i)):
+                    b = True
+                if b == False:
+                    return False
+            while not self.listIsInUltimi(L):
+                self.condition.wait()
+            return True
+            
+
+    def getLettereUltimi(self):
+        with self.lock:
+            list = []
+            for i in self.ultimiTicket:
+                list.append(i[0])
+            return list
+
+    def waitForTicketSafe(self, ticket):
+        with self.lock:
+            primaLettera = ticket[0]
+            while(primaLettera not in self.getLettereUltimi()):
+                self.condition.wait()
+
+            for i in self.ultimiTicket:
+                if(i[0] == primaLettera):
+                    if(ticket < i and ticket not in self.ultimiTicket):
+                        return True
+            return False
+
+    def incDecSizeUltimi(self,n : int):
+        with self.lock:
+            if n < 0 and -n >= len(self.ultimiTicket):
+                return False
+            self.lenUltimiTicket += n
+            
             
 
 
@@ -140,11 +200,47 @@ class Utente(Thread):
         while True:
             ticket = self.sede.prendiTicket(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[0:self.n]))
             print(f"Sono l'utente {get_ident()} e mi faccio un giro prima di mettermi ad aspettare il mio ticket {ticket}")
+            #DIMOSTRAZIONE THREAD VA IN ATTESA BLOCCANTE
             time.sleep(random.randint(1,3))
+            if(self.sede.waitForTicketSafe(str(ticket))):
+                print("Troppo tardi questo per questo ticket: ", str(ticket))
             print(f"Sono l'utente {get_ident()}, ho preso un caffè e adesso aspetto il mio ticket: {ticket}") 
             self.sede.waitForTicket(str(ticket))
 
+class UtenteSafe(Thread):
+    def __init__(self, sede):
+        Thread.__init__(self)
+        self.sede = sede
+        self.n = len(sede.uffici)
 
+    def run(self):
+        while True:
+            ticket = self.sede.prendiTicket(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[0:self.n]))
+            print(f"Sono l'utente {get_ident()} e mi faccio un giro prima di mettermi ad aspettare il mio ticket {ticket}")
+            time.sleep(random.randint(1,3))
+            if(self.sede.waitForTicketSafe(str(ticket))):
+                print("Troppo tardi questo per questo ticket: ", str(ticket))
+            print(f"Sono l'utente {get_ident()}, ho preso un caffè e adesso aspetto il mio ticket: {ticket}") 
+            self.sede.waitForTicketSafe(str(ticket))
+
+class UtenteFurbetto(Thread):
+    def __init__(self, sede):
+        Thread.__init__(self)
+        self.sede = sede
+        self.n = len(sede.uffici)
+
+    def run(self):
+        while True:
+            list = []
+            list.append(self.sede.prendiTicket(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[0:self.n])))
+            list.append(self.sede.prendiTicket(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[0:self.n])))
+            list.append(self.sede.prendiTicket(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[0:self.n])))
+            print(f"Sono l'utente {get_ident()} e mi faccio un giro prima di mettermi ad aspettare il mio ticket {str(list)}")
+            time.sleep(random.randint(1,3))
+            if(self.sede.waitForTickets(list)):
+                print("Troppo tardi questo per questo ticket: ", str(list))
+            print(f"Sono l'utente {get_ident()}, ho preso un caffè e adesso aspetto il mio ticket: str(list)") 
+            self.sede.waitForTicketSafe(str(list))
 
 class Impiegato(Thread):
     def __init__(self, sede, lettera):
@@ -165,7 +261,22 @@ class Impiegato(Thread):
             if random.randint(0,5) >= 4:
                 self.sede.printAttese()
 
+class U(Thread):
+    def __init__(self, sede):
+        Thread.__init__(self)
+        self.sede = sede
+        self.n = len(sede.uffici)
 
+    def run(self):
+        while True:
+            ticket = "A001"
+            print(f"Sono l'utente {get_ident()} e mi faccio un giro prima di mettermi ad aspettare il mio ticket {ticket}")
+            #DIMOSTRAZIONE THREAD VA IN ATTESA BLOCCANTE
+            time.sleep(random.randint(1,3))
+            if(self.sede.bigliettoSaltato(str(ticket))):
+                print(str(ticket), "Coglioneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+            print(f"Sono l'utente {get_ident()}, ho preso un caffè e adesso aspetto il mio ticket: {ticket}") 
+            self.sede.waitForTicket(str(ticket))
 
 
 
@@ -199,3 +310,11 @@ for p in utenti:
 
 for i in impiegato:
     i.start()
+
+
+
+time.sleep(10)
+
+print("Parteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+u = U(sede)
+u.start()
