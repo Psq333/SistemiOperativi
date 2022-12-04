@@ -185,6 +185,13 @@ class Sede:
             if n < 0 and -n >= len(self.ultimiTicket):
                 return False
             self.lenUltimiTicket += n
+            if n < 0:
+                k = len(self.ultimiTicket) - self.lenUltimiTicket
+                if k < 0:
+                    return True
+                for i in range (0, k):
+                    self.ultimiTicket.pop(0)
+            return True
             
             
 
